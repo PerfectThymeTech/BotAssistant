@@ -20,9 +20,9 @@ class Settings(BaseSettings):
 
     # Authentication settings
     APP_ID: str = Field(default="", alias="MICROSOFT_APP_ID")
-    APP_PASSWORD : str = Field(default="", alias="MICROSOFT_APP_PASSWORD")
-    APP_TENANTID : str = Field(default="", alias="MICROSOFT_APP_TENANTID")
-    APP_TYPE : str = Field(default="MultiTenant", alias="MICROSOFT_APP_TYPE")
+    APP_PASSWORD: str = Field(default="", alias="MICROSOFT_APP_PASSWORD")
+    APP_TENANTID: str = Field(default="", alias="MICROSOFT_APP_TENANTID")
+    APP_TYPE: str = Field(default="MultiTenant", alias="MICROSOFT_APP_TYPE")
 
     # Azure Open AI settings
     AZURE_OPEN_AI_ENDPOINT: str

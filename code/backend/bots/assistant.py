@@ -1,4 +1,5 @@
 from typing import List
+
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
 from botbuilder.schema import ChannelAccount
 from llm.assisstant import assistant_handler
@@ -21,7 +22,9 @@ class AssistantBot(ActivityHandler):
                 # Initialize thread in assistant
                 self.thread_id = assistant_handler.create_thread()
                 # Respond with welcome message
-                await turn_context.send_activity("Hello and welcome! I am your personal joke assistant. How can I help you today?")
+                await turn_context.send_activity(
+                    "Hello and welcome! I am your personal joke assistant. How can I help you today?"
+                )
 
     async def on_message_activity(self, turn_context: TurnContext):
         """Acts upon new messages added to a channel.
@@ -35,6 +38,4 @@ class AssistantBot(ActivityHandler):
             thread_id=self.thread_id,
         )
         if message:
-            return await turn_context.send_activity(
-                MessageFactory.text(message)
-            )
+            return await turn_context.send_activity(MessageFactory.text(message))

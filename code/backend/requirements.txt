@@ -1,0 +1,5 @@
+botbuilder-core~=4.16.1
+botbuilder-integration-aiohttp~=4.16.1
+pydantic-settings~=2.2.1
+pydantic~=2.7.0
+openai~=1.42.0

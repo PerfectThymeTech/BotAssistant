@@ -22,12 +22,13 @@ class Settings(BaseSettings):
     APP_ID: str = Field(default="", alias="MICROSOFT_APP_ID")
     APP_PASSWORD: str = Field(default="", alias="MICROSOFT_APP_PASSWORD")
     APP_TENANTID: str = Field(default="", alias="MICROSOFT_APP_TENANTID")
-    APP_TYPE: str = Field(default="MultiTenant", alias="MICROSOFT_APP_TYPE")
+    APP_TYPE: str = Field(default="UserAssignedMSI", alias="MICROSOFT_APP_TYPE")
 
     # Azure Open AI settings
     AZURE_OPEN_AI_ENDPOINT: str
-    AZURE_OPEN_AI_API_VERSION: str
-    AZURE_OPENAI_API_KEY: str
+    AZURE_OPEN_AI_API_VERSION: str = "2024-05-01-preview"
+    AZURE_OPENAI_SYSTEM_PROMPT: str
+    AZURE_OPENAI_MODEL_NAME: str
     AZURE_OPENAI_ASSISTANT_ID: str
 
 

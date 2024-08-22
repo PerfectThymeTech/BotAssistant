@@ -4,7 +4,22 @@ locals {
 
   # Web app locals
   app_settings_default = {
-    WEBSITE_CONTENTOVERVNET = "1"
+    # Configuration app settings
+    SCM_DO_BUILD_DURING_DEPLOYMENT = "true"
+    WEBSITE_CONTENTOVERVNET        = "1"
+
+    # Auth app settings
+    MICROSOFT_APP_ID       = module.user_assigned_identity.user_assigned_identity_client_id
+    MICROSOFT_APP_PASSWORD = ""
+    MICROSOFT_APP_TENANTID = module.user_assigned_identity.user_assigned_identity_tenant_id
+    MICROSOFT_APP_TYPE     = "UserAssignedMSI"
+
+    # Azure open ai app settings
+    AZURE_OPEN_AI_ENDPOINT     = module.azure_open_ai.cognitive_account_endpoint
+    AZURE_OPEN_AI_API_VERSION  = "2024-05-01-preview"
+    AZURE_OPENAI_MODEL_NAME    = "gpt-4o"
+    AZURE_OPENAI_SYSTEM_PROMPT = data.local_file.file_system_prompt.content
+    AZURE_OPENAI_ASSISTANT_ID  = ""
   }
   web_app_app_settings = merge(local.app_settings_default, var.web_app_app_settings)
 
@@ -36,4 +51,7 @@ locals {
 
   # CMK locals
   customer_managed_key = null
+
+  # Other locals
+  system_prompt_code_path = "${path.module}/../../docs/SystemPrompt.txt"
 }

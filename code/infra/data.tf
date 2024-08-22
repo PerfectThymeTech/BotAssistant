@@ -17,3 +17,7 @@ data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   name                = local.log_analytics_workspace.name
   resource_group_name = local.log_analytics_workspace.resource_group_name
 }
+
+data "local_file" "file_system_prompt" {
+  filename = local.system_prompt_code_path
+}

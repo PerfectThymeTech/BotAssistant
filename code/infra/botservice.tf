@@ -30,5 +30,5 @@ module "bot_service" {
   connectivity_delay_in_seconds                = var.connectivity_delay_in_seconds
   private_dns_zone_id_bot_framework_directline = var.private_dns_zone_id_bot_framework_directline
   private_dns_zone_id_bot_framework_token      = var.private_dns_zone_id_bot_framework_token
-  customer_managed_key                         = var.customer_managed_key
+  customer_managed_key                         = local.customer_managed_key
 }

@@ -34,4 +34,7 @@ locals {
       storage_account_id         = ""
     }
   ]
+
+  # CMK locals
+  customer_managed_key = null
 }

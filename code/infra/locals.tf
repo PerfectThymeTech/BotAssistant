@@ -4,7 +4,6 @@ locals {
 
   # Web app locals
   app_settings_default = {
-    WEBSITE_VNET_ROUTE_ALL  = "1"
     WEBSITE_CONTENTOVERVNET = "1"
   }
   web_app_app_settings = merge(local.app_settings_default, var.web_app_app_settings)

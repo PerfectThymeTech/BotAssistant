@@ -2,7 +2,6 @@ module "app_service_plan" {
   source = "github.com/PerfectThymeTech/terraform-azurerm-modules//modules/appserviceplan?ref=main"
   providers = {
     azurerm = azurerm
-    time    = time
   }
 
   location                                  = var.location

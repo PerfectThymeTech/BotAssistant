@@ -6,7 +6,7 @@ module "app_service_plan" {
   }
 
   location                                  = var.location
-  resource_group_name                       = var.resource_group_name
+  resource_group_name                       = azurerm_resource_group.resource_group.name
   tags                                      = var.tags
   service_plan_name                         = "${local.prefix}-asp001"
   service_plan_maximum_elastic_worker_count = null

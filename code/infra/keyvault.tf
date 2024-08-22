@@ -6,13 +6,13 @@ module "key_vault" {
   }
 
   location                             = var.location
-  resource_group_name                  = var.resource_group_name
+  resource_group_name                  = azurerm_resource_group.resource_group.name
   tags                                 = var.tags
   key_vault_name                       = "${local.prefix}-kv001"
   key_vault_sku_name                   = "standard"
   key_vault_soft_delete_retention_days = 7
   diagnostics_configurations           = var.diagnostics_configurations
-  subnet_id                            = 
+  subnet_id                            = azapi_resource.subnet_private_endpoints.id
   connectivity_delay_in_seconds        = var.connectivity_delay_in_seconds
   private_dns_zone_id_vault            = var.private_dns_zone_id_vault
 }

@@ -34,14 +34,10 @@ variable "tags" {
 }
 
 # Service variables
-variable "container_image_reference" {
-  description = "Specifies the container image reference used in Azure Container Jobs."
-  type        = string
-  sensitive   = true
-  validation {
-    condition     = length(var.container_image_reference) > 2
-    error_message = "Please specify a valid container reference."
-  }
+variable "web_app_app_settings" {
+  description = "Specifies the videoindexer id"
+  type        = map(string)
+  sensitive   = false
 }
 
 # Logging variables
@@ -86,12 +82,12 @@ variable "route_table_id" {
   }
 }
 
-variable "subnet_cidr_container" {
-  description = "Specifies the subnet cidr range for the container subnet."
+variable "subnet_cidr_web_app" {
+  description = "Specifies the subnet cidr range for the web app subnet."
   type        = string
   sensitive   = false
   validation {
-    condition     = length(split("/", var.subnet_cidr_container)) == 2
+    condition     = length(split("/", var.subnet_cidr_web_app)) == 2
     error_message = "Please specify a valid subnet cidr range."
   }
 }
@@ -117,17 +113,6 @@ variable "private_dns_zone_id_key_vault" {
   }
 }
 
-variable "private_dns_zone_id_data_factory" {
-  description = "Specifies the resource ID of the private DNS zone for Azure Data Factory. Not required if DNS A-records get created via Azure Policy."
-  type        = string
-  sensitive   = false
-  default     = ""
-  validation {
-    condition     = var.private_dns_zone_id_data_factory == "" || (length(split("/", var.private_dns_zone_id_data_factory)) == 9 && endswith(var.private_dns_zone_id_data_factory, "privatelink.datafactory.azure.net"))
-    error_message = "Please specify a valid resource ID for the private DNS Zone."
-  }
-}
-
 variable "private_dns_zone_id_sites" {
   description = "Specifies the resource ID of the private DNS zone for Azure Websites. Not required if DNS A-records get created via Azue Policy."
   type        = string
@@ -139,13 +124,24 @@ variable "private_dns_zone_id_sites" {
   }
 }
 
-variable "dns_server_ip" {
-  description = "Specifies the ip of the DNS server."
+variable "private_dns_zone_id_bot_framework_directline" {
+  description = "Specifies the resource ID of the private DNS zone for the bot framework directline. Not required if DNS A-records get created via Azure Policy."
   type        = string
   sensitive   = false
   default     = ""
   validation {
-    condition     = length(split(".", var.dns_server_ip)) == 4
-    error_message = "Please specify valid ip adresses."
+    condition     = var.private_dns_zone_id_bot_framework_directline == "" || (length(split("/", var.private_dns_zone_id_bot_framework_directline)) == 9 && endswith(var.private_dns_zone_id_bot_framework_directline, "privatelink.directline.botframework.com"))
+    error_message = "Please specify a valid resource ID for the private DNS Zone."
+  }
+}
+
+variable "private_dns_zone_id_bot_framework_token" {
+  description = "Specifies the resource ID of the private DNS zone for the bot framework token. Not required if DNS A-records get created via Azure Policy."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = var.private_dns_zone_id_bot_framework_token == "" || (length(split("/", var.private_dns_zone_id_bot_framework_token)) == 9 && endswith(var.private_dns_zone_id_bot_framework_token, "privatelink.token.botframework.com"))
+    error_message = "Please specify a valid resource ID for the private DNS Zone."
   }
 }

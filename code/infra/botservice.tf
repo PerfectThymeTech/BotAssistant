@@ -6,11 +6,11 @@ module "bot_service" {
   }
 
   location             = var.location
-  resource_group_name  = var.resource_group_name
+  resource_group_name  = azurerm_resource_group.resource_group.name
   tags                 = var.tags
   bot_service_name     = "${local.prefix}-bot001"
   bot_service_location = "global"
-  bot_service_endpoint = "https://example.com" # TODO
+  bot_service_endpoint = azurerm_linux_web_app.linux_web_app.default_hostname
   bot_service_luis = {
     app_ids = []
     key     = null
@@ -26,7 +26,7 @@ module "bot_service" {
   bot_service_public_network_access_enabled    = true
   bot_service_application_insights_id          = module.application_insights.application_insights_id
   diagnostics_configurations                   = var.diagnostics_configurations
-  subnet_id                                    = 
+  subnet_id                                    = azapi_resource.subnet_private_endpoints.id
   connectivity_delay_in_seconds                = var.connectivity_delay_in_seconds
   private_dns_zone_id_bot_framework_directline = var.private_dns_zone_id_bot_framework_directline
   private_dns_zone_id_bot_framework_token      = var.private_dns_zone_id_bot_framework_token

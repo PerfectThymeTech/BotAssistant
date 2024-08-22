@@ -16,13 +16,13 @@ module "azure_open_ai" {
   cognitive_account_outbound_network_access_allowed_fqdns = []
   cognitive_account_deployments = {
     gpt-4o = {
-      model_name        = "gpt-4o"
-      model_version     = "2024-05-13"
-      scale_type        = "Standard"
-      scale_tier        = "Standard"
-      scale_size        = null
-      scale_family      = null
-      scale_capacity    = 100
+      model_name     = "gpt-4o"
+      model_version  = "2024-05-13"
+      scale_type     = "Standard"
+      scale_tier     = "Standard"
+      scale_size     = null
+      scale_family   = null
+      scale_capacity = 100
     }
   }
   diagnostics_configurations            = []

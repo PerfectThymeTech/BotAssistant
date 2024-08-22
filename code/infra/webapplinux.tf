@@ -31,7 +31,6 @@ resource "azurerm_linux_web_app" "linux_web_app" {
     application_stack {
       python_version = "3.11"
     }
-    auto_heal_enabled                             = false
     container_registry_managed_identity_client_id = null
     container_registry_use_managed_identity       = null
     ftps_state                                    = "Disabled"

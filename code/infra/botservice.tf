@@ -25,7 +25,7 @@ module "bot_service" {
   bot_service_streaming_endpoint_enabled       = false
   bot_service_public_network_access_enabled    = true
   bot_service_application_insights_id          = module.application_insights.application_insights_id
-  diagnostics_configurations                   = var.diagnostics_configurations
+  diagnostics_configurations                   = local.diagnostics_configurations
   subnet_id                                    = azapi_resource.subnet_private_endpoints.id
   connectivity_delay_in_seconds                = var.connectivity_delay_in_seconds
   private_dns_zone_id_bot_framework_directline = var.private_dns_zone_id_bot_framework_directline

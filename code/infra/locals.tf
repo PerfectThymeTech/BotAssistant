@@ -26,4 +26,12 @@ locals {
     resource_group_name = split("/", var.log_analytics_workspace_id)[4]
     name                = split("/", var.log_analytics_workspace_id)[8]
   }
+
+  # Logging locals
+  diagnostics_configurations = [
+    {
+      log_analytics_workspace_id = var.log_analytics_workspace_id
+      storage_account_id         = ""
+    }
+  ]
 }

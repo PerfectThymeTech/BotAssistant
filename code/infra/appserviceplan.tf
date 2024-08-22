@@ -14,5 +14,5 @@ module "app_service_plan" {
   service_plan_sku_name                     = "B1"
   service_plan_worker_count                 = 1
   service_plan_zone_balancing_enabled       = false
-  diagnostics_configurations                = var.diagnostics_configurations
+  diagnostics_configurations                = local.diagnostics_configurations
 }

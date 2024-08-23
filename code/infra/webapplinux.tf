@@ -42,14 +42,14 @@ resource "azurerm_linux_web_app" "linux_web_app" {
     container_registry_use_managed_identity       = null
     ftps_state                                    = "Disabled"
     http2_enabled                                 = true
-    ip_restriction_default_action                 = "Deny"
+    ip_restriction_default_action                 = "Allow" # "Deny"
     load_balancing_mode                           = "LeastRequests"
     local_mysql_enabled                           = false
     managed_pipeline_mode                         = "Integrated"
     minimum_tls_version                           = "1.2"
     remote_debugging_enabled                      = false
     remote_debugging_version                      = "VS2022"
-    scm_ip_restriction_default_action             = "Deny"
+    scm_ip_restriction_default_action             = "Allow" # "Deny"
     scm_use_main_ip_restriction                   = false
     scm_minimum_tls_version                       = "1.2"
     use_32_bit_worker                             = false

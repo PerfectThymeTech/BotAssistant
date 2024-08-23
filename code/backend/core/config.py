@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "BotAssistantSample"
     SERVER_NAME: str = "BotAssistantSample"
     APP_VERSION: str = "v0.0.1"
-    PORT: int = 3978
+    PORT: int = 8000
 
     # Logging settings
     LOGGING_LEVEL: int = logging.INFO
@@ -22,7 +22,8 @@ class Settings(BaseSettings):
     APP_ID: str = Field(default="", alias="MICROSOFT_APP_ID")
     APP_PASSWORD: str = Field(default="", alias="MICROSOFT_APP_PASSWORD")
     APP_TENANTID: str = Field(default="", alias="MICROSOFT_APP_TENANTID")
-    APP_TYPE: str = Field(default="UserAssignedMSI", alias="MICROSOFT_APP_TYPE")
+    APP_TYPE: str = Field(default="", alias="MICROSOFT_APP_TYPE")
+    MANAGED_IDENTITY_CLIENT_ID: str
 
     # Azure Open AI settings
     AZURE_OPEN_AI_ENDPOINT: str

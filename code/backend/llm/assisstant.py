@@ -14,7 +14,10 @@ class AssistantHandler:
         *args,
     ) -> None:
         token_provider = get_bearer_token_provider(
-            DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+            DefaultAzureCredential(
+                managed_identity_client_id=settings.MANAGED_IDENTITY_CLIENT_ID
+            ),
+            "https://cognitiveservices.azure.com/.default",
         )
         self.client = AzureOpenAI(
             api_version=settings.AZURE_OPEN_AI_API_VERSION,

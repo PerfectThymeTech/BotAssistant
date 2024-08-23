@@ -1,0 +1,92 @@
+name: Web App Deploy Template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        default: "dev"
+        description: "Specifies the environment of the deployment."
+      python_version:
+        required: true
+        type: string
+        default: "3.11"
+        description: "Specifies the python version."
+      webapp_directory:
+        required: true
+        type: string
+        description: "Specifies the directory of the Azure Web App."
+      webapp_name:
+        required: true
+        type: string
+        description: "Specifies the name of the Azure Web App."
+      tenant_id:
+        required: true
+        type: string
+        description: "Specifies the tenant id of the deployment."
+      subscription_id:
+        required: true
+        type: string
+        description: "Specifies the subscription id of the deployment."
+    secrets:
+      CLIENT_ID:
+        required: true
+        description: "Specifies the client id."
+      CLIENT_SECRET:
+        required: true
+        description: "Specifies the client secret."
+
+jobs:
+  deployment:
+    name: Web App Deploy
+    runs-on: [self-hosted]
+    continue-on-error: false
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: webapp-${{ inputs.webapp_name }}-${{ inputs.environment }}
+      cancel-in-progress: false
+
+    steps:
+      # Check Out Repository
+      - name: Check Out Repository
+        id: checkout_repository
+        uses: actions/checkout@v4
+
+      # Setup Python
+      - name: Setup Python
+        id: python_setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python_version }}
+          cache: "pip"
+          cache-dependency-path: |
+            ${{ inputs.webapp_directory }}/requirements.txt
+
+      # Install Function Dependencies
+      - name: Resolve Function Dependencies
+        id: function_dependencies
+        shell: bash
+        run: |
+          pushd "${WEBAPP_DIRECTORY}"
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+          popd
+        env:
+          WEBAPP_DIRECTORY: ${{ inputs.webapp_directory }}
+
+      # Login to Azure
+      - name: Azure Login
+        id: azure_login
+        uses: azure/login@v2
+        with:
+          creds:  '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ inputs.subscription_id }}","tenantId":"${{ inputs.tenant_id }}"}'
+
+      # Deploy Web App
+      - name: Deploy Web App
+        id: webapp_deploy
+        uses: Azure/webapps-deploy@v3
+        with:
+          app-name: ${{ inputs.webapp_name }}
+          package: ${{ inputs.webapp_directory }}
+          startup-command: "gunicorn --bind 0.0.0.0 --worker-class aiohttp.worker.GunicornWebWorker --timeout 600 app:APP"

@@ -5,14 +5,17 @@ locals {
   # Web app locals
   app_settings_default = {
     # Configuration app settings
-    SCM_DO_BUILD_DURING_DEPLOYMENT = "true"
-    WEBSITE_CONTENTOVERVNET        = "1"
+    APPLICATIONINSIGHTS_CONNECTION_STRING      = module.application_insights.application_insights_connection_string
+    ApplicationInsightsAgent_EXTENSION_VERSION = "~3"
+    SCM_DO_BUILD_DURING_DEPLOYMENT             = "1"
+    WEBSITE_CONTENTOVERVNET                    = "1"
 
     # Auth app settings
-    MICROSOFT_APP_ID       = module.user_assigned_identity.user_assigned_identity_client_id
-    MICROSOFT_APP_PASSWORD = ""
-    MICROSOFT_APP_TENANTID = module.user_assigned_identity.user_assigned_identity_tenant_id
-    MICROSOFT_APP_TYPE     = "UserAssignedMSI"
+    MICROSOFT_APP_ID           = module.user_assigned_identity.user_assigned_identity_client_id
+    MICROSOFT_APP_PASSWORD     = ""
+    MICROSOFT_APP_TENANTID     = module.user_assigned_identity.user_assigned_identity_tenant_id
+    MICROSOFT_APP_TYPE         = "UserAssignedMSI"
+    MANAGED_IDENTITY_CLIENT_ID = module.user_assigned_identity.user_assigned_identity_client_id
 
     # Azure open ai app settings
     AZURE_OPEN_AI_ENDPOINT     = module.azure_open_ai.cognitive_account_endpoint

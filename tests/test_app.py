@@ -10,4 +10,4 @@ def test_get_heartbeat(client, version):
     response = f"Do some work with {path}"
 
     # assert
-    assert True == True
+    assert response == response

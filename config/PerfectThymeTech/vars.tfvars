@@ -1,7 +1,8 @@
 # General variables
-location    = "northeurope"
-environment = "dev"
-prefix      = "assis"
+location        = "northeurope"
+location_openai = "swedencentral"
+environment     = "dev"
+prefix          = "assis"
 tags = {
   workload = "assis"
 }

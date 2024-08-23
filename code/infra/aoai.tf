@@ -5,7 +5,8 @@ module "azure_open_ai" {
     time    = time
   }
 
-  location                                                = var.location
+  location                                                = var.location_openai
+  location_private_endpoint                               = var.location
   resource_group_name                                     = azurerm_resource_group.resource_group.name
   tags                                                    = var.tags
   cognitive_account_name                                  = "${local.prefix}-aoai001"

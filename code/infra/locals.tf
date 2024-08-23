@@ -17,7 +17,7 @@ locals {
     # Azure open ai app settings
     AZURE_OPEN_AI_ENDPOINT     = module.azure_open_ai.cognitive_account_endpoint
     AZURE_OPEN_AI_API_VERSION  = "2024-05-01-preview"
-    AZURE_OPENAI_MODEL_NAME    = "gpt-4o"
+    AZURE_OPENAI_MODEL_NAME    = azurerm_cognitive_deployment.cognitive_deployment_gpt_4o.name
     AZURE_OPENAI_SYSTEM_PROMPT = data.local_file.file_system_prompt.content
     AZURE_OPENAI_ASSISTANT_ID  = ""
   }

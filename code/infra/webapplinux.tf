@@ -27,9 +27,16 @@ resource "azurerm_linux_web_app" "linux_web_app" {
     always_on             = true
     api_definition_url    = null
     api_management_api_id = null
-    app_command_line      = null
+    app_command_line      = "gunicorn --bind 0.0.0.0 --worker-class aiohttp.worker.GunicornWebWorker --timeout 600 app:APP"
     application_stack {
       python_version = "3.11"
+    }
+    cors {
+      allowed_origins = [
+        "https://botservice.hosting.portal.azure.net",
+        "https://hosting.onecloud.azure-test.net",
+      ]
+      support_credentials = true
     }
     container_registry_managed_identity_client_id = null
     container_registry_use_managed_identity       = null

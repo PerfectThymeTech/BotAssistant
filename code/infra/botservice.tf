@@ -10,7 +10,7 @@ module "bot_service" {
   tags                 = var.tags
   bot_service_name     = "${local.prefix}-bot001"
   bot_service_location = "global"
-  bot_service_endpoint = azurerm_linux_web_app.linux_web_app.default_hostname
+  bot_service_endpoint = "https://${azurerm_linux_web_app.linux_web_app.default_hostname}"
   bot_service_luis = {
     app_ids = []
     key     = null

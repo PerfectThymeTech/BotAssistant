@@ -2,6 +2,7 @@ import json
 import logging
 import time
 
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from core.config import settings
 from openai import AzureOpenAI
 from openai.types.beta.threads import Run
@@ -12,12 +13,31 @@ class AssistantHandler:
         self,
         *args,
     ) -> None:
+        token_provider = get_bearer_token_provider(
+            DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+        )
         self.client = AzureOpenAI(
-            api_key=settings.AZURE_OPENAI_API_KEY,
             api_version=settings.AZURE_OPEN_AI_API_VERSION,
             azure_endpoint=settings.AZURE_OPEN_AI_ENDPOINT,
+            azure_ad_token_provider=token_provider,
         )
-        self.assistant_id = settings.AZURE_OPENAI_ASSISTANT_ID
+        if settings.AZURE_OPENAI_ASSISTANT_ID:
+            self.assistant_id = settings.AZURE_OPENAI_ASSISTANT_ID
+        else:
+            self.assistant_id = self.__init_assistant()
+
+    def __init_assistant(self) -> str:
+        """Creates an assistant if no assistant id was provided.
+
+        RETURNS (str): Assistant id of the newly created assistant.
+        """
+        assistant = self.client.beta.assistants.create(
+            name=settings.PROJECT_NAME,
+            instructions=settings.AZURE_OPENAI_SYSTEM_PROMPT,
+            tools=[],
+            model=settings.AZURE_OPENAI_MODEL_NAME,
+        )
+        return assistant.id
 
     def create_thread(self) -> str:
         """Create a thread in the assistant.

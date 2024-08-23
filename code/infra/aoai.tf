@@ -19,7 +19,7 @@ module "azure_open_ai" {
     gpt-4o = {
       model_name     = "gpt-4o"
       model_version  = "2024-05-13"
-      scale_type     = "Standard"
+      scale_type     = null
       scale_tier     = null
       scale_size     = null
       scale_family   = null

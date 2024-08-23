@@ -23,3 +23,4 @@ private_dns_zone_id_vault                    = "/subscriptions/8f171ff9-2b5b-4f0
 private_dns_zone_id_sites                    = "/subscriptions/8f171ff9-2b5b-4f0f-aed5-7fa360a1d094/resourceGroups/mycrp-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net"
 private_dns_zone_id_bot_framework_directline = "/subscriptions/8f171ff9-2b5b-4f0f-aed5-7fa360a1d094/resourceGroups/mycrp-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.directline.botframework.com"
 private_dns_zone_id_bot_framework_token      = "/subscriptions/8f171ff9-2b5b-4f0f-aed5-7fa360a1d094/resourceGroups/mycrp-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.token.botframework.com"
+private_dns_zone_id_open_ai                  = "/subscriptions/8f171ff9-2b5b-4f0f-aed5-7fa360a1d094/resourceGroups/mycrp-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.openai.azure.com"

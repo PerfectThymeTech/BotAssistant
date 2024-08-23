@@ -85,8 +85,8 @@ jobs:
       # Deploy Web App
       - name: Deploy Web App
         id: webapp_deploy
-        uses: Azure/webapps-deploy@v2
+        uses: Azure/webapps-deploy@v3
         with:
           app-name: ${{ inputs.webapp_name }}
           package: ${{ inputs.webapp_directory }}
-          startup-command: ""
+          startup-command: "gunicorn --bind 0.0.0.0 --worker-class aiohttp.worker.GunicornWebWorker --timeout 600 app:APP"

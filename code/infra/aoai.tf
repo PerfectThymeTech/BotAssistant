@@ -15,7 +15,7 @@ module "azure_open_ai" {
   cognitive_account_firewall_bypass_azure_services        = false
   cognitive_account_outbound_network_access_restricted    = true
   cognitive_account_outbound_network_access_allowed_fqdns = []
-  cognitive_account_deployments = {}
+  cognitive_account_deployments                           = {}
   # {
   #   gpt-4o = {
   #     model_name     = "gpt-4o"

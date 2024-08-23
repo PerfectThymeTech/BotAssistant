@@ -1,0 +1,42 @@
+name: Function App Deployment
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.py"
+      - "code/function/**"
+      - "tests/**"
+      - "requirements.txt"
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**.py"
+      - "code/function/**"
+      - "tests/**"
+      - "requirements.txt"
+
+jobs:
+  webapp_test:
+    uses: ./.github/workflows/_webappTestTemplate.yml
+    name: "Web App Test"
+    with:
+      python_version: "3.11"
+      webapp_directory: "./code/backend"
+
+  webapp_dev:
+    uses: ./.github/workflows/_webappDeployTemplate.yml
+    name: "Web App - Dev"
+    needs: [webapp_test]
+    with:
+      environment: "dev"
+      python_version: "3.11"
+      webapp_directory: "./code/backend"
+      webapp_name: ""
+      tenant_id: "3556be79-2979-4b19-a1af-4dd4e6d9ed7e"
+      subscription_id: "8f171ff9-2b5b-4f0f-aed5-7fa360a1d094"
+    secrets:
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}

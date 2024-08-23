@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.parametrize("version", ("v1",))
-def test_get_heartbeat(client, version):
+def test_get_heartbeat(version):
     # arrange
     path = f"/{version}/health/heartbeat"
 

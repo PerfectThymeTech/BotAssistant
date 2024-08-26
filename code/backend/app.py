@@ -15,7 +15,6 @@ from bots.assistant import AssistantBot
 from core.config import settings as CONFIG
 from utils import enable_logging
 
-
 # Enable logging
 enable_logging()
 

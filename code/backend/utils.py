@@ -9,6 +9,10 @@ from opentelemetry.sdk.resources import Resource
 
 
 def enable_logging():
+    # Configure base logger
+    log_level = logging.DEBUG if settings.DEBUG else settings.LOGGING_LEVEL
+    logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s", level=log_level)
+
     # Configure azure monitor logs
     configure_azure_monitor(
         connection_string=settings.APPLICATIONINSIGHTS_CONNECTION_STRING,
@@ -29,7 +33,6 @@ def enable_logging():
                 "service.instance.id": settings.WEBSITE_INSTANCE_ID,
             }
         ),
-        # logger_name=__name__,
         enable_live_metrics=True,
     )
 

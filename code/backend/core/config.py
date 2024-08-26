@@ -16,8 +16,8 @@ class Settings(BaseSettings):
     WEBSITE_INSTANCE_ID: str = Field(default="0", alias="WEBSITE_INSTANCE_ID")
 
     # Logging settings
-    LOGGING_LEVEL: int = logging.INFO
-    DEBUG: bool = False
+    LOGGING_LEVEL: int = logging.DEBUG
+    DEBUG: bool = True
     APPLICATIONINSIGHTS_CONNECTION_STRING: str = Field(
         default="", alias="APPLICATIONINSIGHTS_CONNECTION_STRING"
     )

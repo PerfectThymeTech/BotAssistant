@@ -14,7 +14,7 @@ def enable_logging():
         connection_string=settings.APPLICATIONINSIGHTS_CONNECTION_STRING,
         instrumentation_options={
             "azure_sdk": {"enabled": True},
-            "django": {"enabled": True},
+            "django": {"enabled": False},
             "fastapi": {"enabled": False},
             "flask": {"enabled": True},
             "psycopg2": {"enabled": False},
@@ -29,7 +29,7 @@ def enable_logging():
                 "service.instance.id": settings.WEBSITE_INSTANCE_ID,
             }
         ),
-        logger_name=__name__,
+        # logger_name=__name__,
         enable_live_metrics=True,
     )
 

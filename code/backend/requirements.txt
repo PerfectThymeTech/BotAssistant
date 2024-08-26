@@ -6,4 +6,4 @@ openai~=1.42.0
 opentelemetry-instrumentation-aiohttp-client~=0.47b0
 opentelemetry-instrumentation-aiohttp-server~=0.47b0
 pydantic~=2.7.0
-pydantic-settings~=2.2.1
+pydantic-settings~=2.4.0

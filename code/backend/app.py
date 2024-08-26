@@ -10,9 +10,11 @@ from botbuilder.integration.aiohttp import (
     CloudAdapter,
     ConfigurationBotFrameworkAuthentication,
 )
+from botbuilder.integration.applicationinsights.aiohttp import bot_telemetry_middleware
 from botbuilder.schema import Activity, ActivityTypes
 from bots.assistant import AssistantBot
 from core.config import settings as CONFIG
+from utils import get_bot_telemetry_middleware
 
 # Create adapter.
 # See https://aka.ms/about-bot-adapter to learn more about how bots work.
@@ -47,6 +49,7 @@ async def on_error(context: TurnContext, error: Exception):
         await context.send_activity(trace_activity)
 
 
+ADAPTER.use(get_bot_telemetry_middleware())
 ADAPTER.on_turn_error = on_error
 
 # Create the Bot
@@ -58,7 +61,7 @@ async def messages(req: Request) -> Response:
     return await ADAPTER.process(req, BOT)
 
 
-APP = web.Application(middlewares=[aiohttp_error_middleware])
+APP = web.Application(middlewares=[bot_telemetry_middleware, aiohttp_error_middleware])
 APP.router.add_post("/api/messages", messages)
 
 if __name__ == "__main__":

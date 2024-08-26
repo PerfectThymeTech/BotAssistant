@@ -6,6 +6,7 @@ locals {
   app_settings_default = {
     # Configuration app settings
     APPLICATIONINSIGHTS_CONNECTION_STRING      = module.application_insights.application_insights_connection_string
+    APPLICATIONINSIGHTS_INSTRUMENTATION_KEY    = module.application_insights.application_insights_instrumentation_key
     ApplicationInsightsAgent_EXTENSION_VERSION = "~3"
     SCM_DO_BUILD_DURING_DEPLOYMENT             = "1"
     WEBSITE_CONTENTOVERVNET                    = "1"

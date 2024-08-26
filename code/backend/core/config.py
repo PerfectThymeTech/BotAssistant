@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     APPLICATIONINSIGHTS_CONNECTION_STRING: str = Field(
         default="", alias="APPLICATIONINSIGHTS_CONNECTION_STRING"
     )
+    APPLICATIONINSIGHTS_INSTRUMENTATION_KEY: str = Field(
+        default="", alias="APPLICATIONINSIGHTS_INSTRUMENTATION_KEY"
+    )
 
     # Authentication settings
     APP_ID: str = Field(default="", alias="MICROSOFT_APP_ID")

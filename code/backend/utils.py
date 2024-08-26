@@ -1,8 +1,6 @@
-from botbuilder.core.telemetry_logger_middleware import TelemetryLoggerMiddleware
 from botbuilder.applicationinsights import ApplicationInsightsTelemetryClient
-from botbuilder.integration.applicationinsights.aiohttp import (
-    AiohttpTelemetryProcessor,
-)
+from botbuilder.core.telemetry_logger_middleware import TelemetryLoggerMiddleware
+from botbuilder.integration.applicationinsights.aiohttp import AiohttpTelemetryProcessor
 from core.config import settings
 
 

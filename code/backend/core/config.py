@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     APP_VERSION: str = "v0.0.1"
     PORT: int = 8000
 
+    # Web app settings
+    WEBSITE_NAME: str = Field(default="test", alias="WEBSITE_SITE_NAME")
+    WEBSITE_INSTANCE_ID: str = Field(default="0", alias="WEBSITE_INSTANCE_ID")
+
     # Logging settings
     LOGGING_LEVEL: int = logging.INFO
     DEBUG: bool = False

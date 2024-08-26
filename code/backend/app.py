@@ -13,6 +13,10 @@ from botbuilder.integration.aiohttp import (
 from botbuilder.schema import Activity, ActivityTypes
 from bots.assistant import AssistantBot
 from core.config import settings as CONFIG
+from utils import enable_logging
+
+# Enable logging
+enable_logging()
 
 # Create adapter.
 # See https://aka.ms/about-bot-adapter to learn more about how bots work.

@@ -96,9 +96,7 @@ class AssistantHandler:
                 thread_id=thread_id, run_id=run.id
             )
             status = run.status
-            logger.debug(
-                f"Status of run '{run.id}' in thread '{thread_id}': {status}"
-            )
+            logger.debug(f"Status of run '{run.id}' in thread '{thread_id}': {status}")
         return run
 
     def __check_for_tools(self, run: Run, thread_id: str) -> Run:

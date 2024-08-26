@@ -1,13 +1,12 @@
 import logging
 
 from azure.monitor.opentelemetry import configure_azure_monitor
-from opentelemetry import trace
-from opentelemetry.sdk.resources import Resource
-from opentelemetry.instrumentation.aiohttp_client import (
-    AioHttpClientInstrumentor
-)
-from opentelemetry.instrumentation.aiohttp_server import AioHttpServerInstrumentor
 from core.config import settings
+from opentelemetry import trace
+from opentelemetry.instrumentation.aiohttp_client import AioHttpClientInstrumentor
+from opentelemetry.instrumentation.aiohttp_server import AioHttpServerInstrumentor
+from opentelemetry.sdk.resources import Resource
+
 
 def enable_logging():
     # Configure azure monitor logs

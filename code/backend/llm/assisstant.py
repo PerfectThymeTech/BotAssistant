@@ -42,6 +42,7 @@ class AssistantHandler:
             tools=[],
             model=settings.AZURE_OPENAI_MODEL_NAME,
         )
+        logger.info(f"Created new assisstant with assistant id: '{assistant.id}'")
         return assistant.id
 
     def create_thread(self) -> str:
@@ -95,7 +96,9 @@ class AssistantHandler:
                 thread_id=thread_id, run_id=run.id
             )
             status = run.status
-            logger.warning(f"Status of run '{run.id}' in thread '{thread_id}': {status}")
+            logger.warning(
+                f"Status of run '{run.id}' in thread '{thread_id}': {status}"
+            )
         return run
 
     def __check_for_tools(self, run: Run, thread_id: str) -> Run:

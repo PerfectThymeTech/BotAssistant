@@ -33,6 +33,7 @@ def enable_logging():
                 "service.instance.id": settings.WEBSITE_INSTANCE_ID,
             }
         ),
+        logger_name=settings.PROJECT_NAME,
         enable_live_metrics=True,
     )
 
@@ -42,7 +43,7 @@ def enable_logging():
 
 
 def get_logger(name: str) -> logging.Logger:
-    logger = logging.getLogger(name=name)
+    logger = logging.getLogger(name=f"{settings.PROJECT_NAME}.{name}")
     if settings.DEBUG:
         logger.setLevel(logging.DEBUG)
     else:

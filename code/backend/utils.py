@@ -43,14 +43,18 @@ def enable_logging():
 
 
 def get_logger(name: str) -> logging.Logger:
-    logger = logging.getLogger(name=f"{settings.PROJECT_NAME}.{name}")
-    if settings.DEBUG:
-        logger.setLevel(logging.DEBUG)
-    else:
-        logger.setLevel(settings.LOGGING_LEVEL)
+    # Init logger
+    logger = logging.getLogger(f"{settings.PROJECT_NAME}.{name}")
+
+    # Set log level
+    log_level = logging.DEBUG if settings.DEBUG else settings.LOGGING_LEVEL
+    logger.setLevel(log_level)
+
     return logger
 
 
 def get_tracer(name: str) -> trace.Tracer:
+    # Init tracer
     tracer = trace.get_tracer(name)
+
     return tracer

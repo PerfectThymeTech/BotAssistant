@@ -26,15 +26,15 @@ def enable_logging():
         #     "urllib": {"enabled": False},
         #     "urllib3": {"enabled": False},
         # },
-        # resource=Resource.create(
-        #     {
-        #         "service.name": settings.SERVER_NAME,
-        #         "service.namespace": settings.PROJECT_NAME,
-        #         "service.instance.id": settings.WEBSITE_INSTANCE_ID,
-        #     }
-        # ),
-        # logger_name=settings.PROJECT_NAME,
-        # enable_live_metrics=True,
+        resource=Resource.create(
+            {
+                "service.name": settings.SERVER_NAME,
+                "service.namespace": settings.PROJECT_NAME,
+                "service.instance.id": settings.WEBSITE_INSTANCE_ID,
+            }
+        ),
+        logger_name=settings.PROJECT_NAME,
+        enable_live_metrics=True,
     )
 
     # Enable additional instrumentation

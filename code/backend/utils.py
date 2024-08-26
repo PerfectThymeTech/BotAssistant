@@ -16,16 +16,16 @@ def enable_logging():
     # Configure azure monitor logs
     configure_azure_monitor(
         connection_string=settings.APPLICATIONINSIGHTS_CONNECTION_STRING,
-        instrumentation_options={
-            "azure_sdk": {"enabled": True},
-            "django": {"enabled": False},
-            "fastapi": {"enabled": False},
-            "flask": {"enabled": True},
-            "psycopg2": {"enabled": False},
-            "requests": {"enabled": False},
-            "urllib": {"enabled": False},
-            "urllib3": {"enabled": False},
-        },
+        # instrumentation_options={
+        #     "azure_sdk": {"enabled": True},
+        #     "django": {"enabled": False},
+        #     "fastapi": {"enabled": False},
+        #     "flask": {"enabled": True},
+        #     "psycopg2": {"enabled": False},
+        #     "requests": {"enabled": False},
+        #     "urllib": {"enabled": False},
+        #     "urllib3": {"enabled": False},
+        # },
         resource=Resource.create(
             {
                 "service.name": settings.SERVER_NAME,

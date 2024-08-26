@@ -1,11 +1,13 @@
 import json
-import logging
 import time
 
+from utils import get_logger
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from core.config import settings
 from openai import AzureOpenAI
 from openai.types.beta.threads import Run
+
+logger = get_logger(__name__)
 
 
 class AssistantHandler:
@@ -48,7 +50,7 @@ class AssistantHandler:
         RETURNS (str): Thread id of the newly created thread.
         """
         thread = self.client.beta.threads.create()
-        logging.debug(f"Created thread with thread id: '{thread.id}'")
+        logger.debug(f"Created thread with thread id: '{thread.id}'")
         return thread.id
 
     def send_message(self, message: str, thread_id: str) -> str | None:
@@ -58,7 +60,7 @@ class AssistantHandler:
         thread_id (str): The thread id to which the message should be sent to the assistant.
         RETURNS (str): The response from the assistant is being returned.
         """
-        logging.debug(
+        logger.debug(
             f"Adding message to thread with thread id: '{thread_id}' - Mesage: '{message}'"
         )
         if thread_id is None:
@@ -93,7 +95,7 @@ class AssistantHandler:
                 thread_id=thread_id, run_id=run.id
             )
             status = run.status
-            logging.debug(f"Status of run '{run.id}' in thread '{thread_id}': {status}")
+            logger.debug(f"Status of run '{run.id}' in thread '{thread_id}': {status}")
         return run
 
     def __check_for_tools(self, run: Run, thread_id: str) -> Run:
@@ -132,7 +134,7 @@ class AssistantHandler:
         first_message_text = message_data_0_content_0.get("text", {"value": ""}).get(
             "value"
         )
-        logging.debug(
+        logger.debug(
             f"Response from Assistant in thread '{thread_id}': {first_message_text}"
         )
 

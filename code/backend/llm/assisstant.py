@@ -50,7 +50,7 @@ class AssistantHandler:
         RETURNS (str): Thread id of the newly created thread.
         """
         thread = self.client.beta.threads.create()
-        logger.debug(f"Created thread with thread id: '{thread.id}'")
+        logger.warning(f"Created thread with thread id: '{thread.id}'")
         return thread.id
 
     def send_message(self, message: str, thread_id: str) -> str | None:
@@ -60,7 +60,7 @@ class AssistantHandler:
         thread_id (str): The thread id to which the message should be sent to the assistant.
         RETURNS (str): The response from the assistant is being returned.
         """
-        logger.debug(
+        logger.warning(
             f"Adding message to thread with thread id: '{thread_id}' - Mesage: '{message}'"
         )
         if thread_id is None:
@@ -95,7 +95,7 @@ class AssistantHandler:
                 thread_id=thread_id, run_id=run.id
             )
             status = run.status
-            logger.debug(f"Status of run '{run.id}' in thread '{thread_id}': {status}")
+            logger.warning(f"Status of run '{run.id}' in thread '{thread_id}': {status}")
         return run
 
     def __check_for_tools(self, run: Run, thread_id: str) -> Run:
@@ -134,7 +134,7 @@ class AssistantHandler:
         first_message_text = message_data_0_content_0.get("text", {"value": ""}).get(
             "value"
         )
-        logger.debug(
+        logger.warning(
             f"Response from Assistant in thread '{thread_id}': {first_message_text}"
         )
 

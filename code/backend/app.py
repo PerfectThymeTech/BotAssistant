@@ -1,60 +1,24 @@
-import sys
-import traceback
-from datetime import datetime
-
 from aiohttp import web
 from aiohttp.web import Request, Response
-from botbuilder.core import TurnContext
 from botbuilder.core.integration import aiohttp_error_middleware
 from botbuilder.integration.aiohttp import (
     CloudAdapter,
     ConfigurationBotFrameworkAuthentication,
 )
-from botbuilder.schema import Activity, ActivityTypes
-from bots.assistant import AssistantBot
+from bots.assistant_bot import AssistantBot
+from bots.utils_bot import BotUtils
 from core.config import settings as CONFIG
 from utils import enable_logging
 
-# Enable logging
-enable_logging()
-
-# Create adapter.
-# See https://aka.ms/about-bot-adapter to learn more about how bots work.
+# Create cloud adapter
 ADAPTER = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))
+ADAPTER.on_turn_error = BotUtils.on_error
 
-
-# Catch-all for errors.
-async def on_error(context: TurnContext, error: Exception):
-    # This check writes out errors to console log .vs. app insights.
-    # NOTE: In production environment, you should consider logging this to Azure
-    #       application insights.
-    print(f"\n [on_turn_error] unhandled error: {error}", file=sys.stderr)
-    traceback.print_exc()
-
-    # Send a message to the user
-    await context.send_activity("The bot encountered an error or bug.")
-    await context.send_activity(
-        "To continue to run this bot, please fix the bot source code."
-    )
-    # Send a trace activity if we're talking to the Bot Framework Emulator
-    if context.activity.channel_id == "emulator":
-        # Create a trace activity that contains the error object
-        trace_activity = Activity(
-            label="TurnError",
-            name="on_turn_error Trace",
-            timestamp=datetime.now(datetime.UTC),
-            type=ActivityTypes.trace,
-            value=f"{error}",
-            value_type="https://www.botframework.com/schemas/error",
-        )
-        # Send a trace activity, which will be displayed in Bot Framework Emulator
-        await context.send_activity(trace_activity)
-
-
-ADAPTER.on_turn_error = on_error
-
-# Create the Bot
+# Create bot
 BOT = AssistantBot()
+
+# Create app
+APP = web.Application(middlewares=[aiohttp_error_middleware])
 
 
 # Listen for incoming requests on /api/messages
@@ -62,8 +26,12 @@ async def messages(req: Request) -> Response:
     return await ADAPTER.process(req, BOT)
 
 
-APP = web.Application(middlewares=[aiohttp_error_middleware])
+# Add route to app
 APP.router.add_post("/api/messages", messages)
+
+# Enable logging
+enable_logging()
+
 
 if __name__ == "__main__":
     try:

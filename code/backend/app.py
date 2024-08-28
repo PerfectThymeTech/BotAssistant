@@ -12,6 +12,10 @@ from utils import enable_logging
 
 
 def init_app() -> web.Application:
+    """Initializes the bot web app.
+
+    RETURNS (Application): Returns the configure web application.
+    """
     # Create cloud adapter
     adapter = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))
     adapter.on_turn_error = BotUtils.on_error

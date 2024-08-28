@@ -8,7 +8,11 @@ from opentelemetry.instrumentation.aiohttp_server import AioHttpServerInstrument
 from opentelemetry.sdk.resources import Resource
 
 
-def enable_logging():
+def enable_logging() -> None:
+    """Initializes the logging via open telemetry for the bot framework.
+
+    RETURNS (None): No return value.
+    """
     # Configure base logger
     log_level = logging.DEBUG if settings.DEBUG else settings.LOGGING_LEVEL
     logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s", level=log_level)
@@ -43,6 +47,11 @@ def enable_logging():
 
 
 def get_logger(name: str) -> logging.Logger:
+    """Creates and returns a logger instance with the configured logging level that is connected to the open telemetry exporter.
+
+    name (str): Child name of the logger.
+    RETURNS (Logger): Returns a logger instance to capture logs.
+    """
     # Init logger
     logger = logging.getLogger(f"{settings.PROJECT_NAME}.{name}")
 
@@ -54,7 +63,12 @@ def get_logger(name: str) -> logging.Logger:
 
 
 def get_tracer(name: str) -> trace.Tracer:
+    """Creates and returns a tracer instance with the configured logging level that is connected to the open telemetry exporter.
+
+    name (str): Child name of the tracer.
+    RETURNS (Tracer): Returns a tracer instance to capture traces.
+    """
     # Init tracer
-    tracer = trace.get_tracer(name)
+    tracer = trace.get_tracer(f"{settings.PROJECT_NAME}.{name}")
 
     return tracer

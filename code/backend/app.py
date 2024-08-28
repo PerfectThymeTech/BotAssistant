@@ -30,14 +30,15 @@ def init_app() -> web.Application:
     app.router.add_post("/api/messages", messages)
 
 
+# Create app
+APP = init_app()
+
+
 if __name__ == "__main__":
     # Enable logging
     enable_logging()
 
-    # Create app
-    app = init_app()
-
     try:
-        web.run_app(app, host="localhost", port=CONFIG.PORT)
+        web.run_app(APP, host="localhost", port=CONFIG.PORT)
     except Exception as error:
         raise error

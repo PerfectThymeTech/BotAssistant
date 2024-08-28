@@ -1,7 +1,7 @@
-from botbuilder.schema import Activity, ActivityTypes
-from botbuilder.core import TurnContext
 from datetime import datetime
 
+from botbuilder.core import TurnContext
+from botbuilder.schema import Activity, ActivityTypes
 from utils import get_logger
 
 logger = get_logger(__name__)
@@ -15,9 +15,11 @@ class BotUtils:
         logger.error("Unexpected error within the application", error)
 
         # Send a message to the user
-        await context.send_activity("The bot encountered an error or bug. The team will get notified and look into the issue. Sorry for any inconveniences caused.")
+        await context.send_activity(
+            "The bot encountered an error or bug. The team will get notified and look into the issue. Sorry for any inconveniences caused."
+        )
 
-        # For the Bot Framework emulator channel send a trace activity 
+        # For the Bot Framework emulator channel send a trace activity
         if context.activity.channel_id == "emulator":
             # Create a trace activity that contains the error object
             trace_activity = Activity(

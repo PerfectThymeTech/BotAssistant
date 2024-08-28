@@ -33,6 +33,8 @@ def init_app() -> web.Application:
     # Add route to app
     app.router.add_post("/api/messages", messages)
 
+    return app
+
 
 # Enable logging
 enable_logging()

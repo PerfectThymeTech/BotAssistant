@@ -10,38 +10,31 @@ from bots.utils_bot import BotUtils
 from core.config import settings as CONFIG
 from utils import enable_logging
 
+# Create cloud adapter
+ADAPTER = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))
+ADAPTER.on_turn_error = BotUtils.on_error
 
-def init_app() -> web.Application:
-    """Initializes the bot web app.
+# Create bot
+BOT = AssistantBot()
 
-    RETURNS (Application): Returns the configure web application.
-    """
-    # Create cloud adapter
-    adapter = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))
-    adapter.on_turn_error = BotUtils.on_error
+# Create app
+APP = web.Application(middlewares=[aiohttp_error_middleware])
 
-    # Create bot
-    bot = AssistantBot()
 
-    # Create app
-    app = web.Application(middlewares=[aiohttp_error_middleware])
+# Listen for incoming requests on /api/messages
+async def messages(req: Request) -> Response:
+    return await ADAPTER.process(req, BOT)
 
-    # Listen for incoming requests on /api/messages
-    async def messages(req: Request) -> Response:
-        return await adapter.process(req, bot)
 
-    # Add route to app
-    app.router.add_post("/api/messages", messages)
-
-    return app
-
+# Add route to app
+APP.router.add_post("/api/messages", messages)
 
 # Enable logging
 enable_logging()
 
-# Create app
-APP = init_app()
-try:
-    web.run_app(APP, host="localhost", port=CONFIG.PORT)
-except Exception as error:
-    raise error
+
+if __name__ == "__main__":
+    try:
+        web.run_app(APP, host="localhost", port=CONFIG.PORT)
+    except Exception as error:
+        raise error

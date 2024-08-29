@@ -10,6 +10,9 @@ from bots.utils_bot import BotUtils
 from core.config import settings as CONFIG
 from utils import enable_logging
 
+# Enable logging
+enable_logging()
+
 # Create cloud adapter
 ADAPTER = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))
 ADAPTER.on_turn_error = BotUtils.on_error
@@ -28,10 +31,6 @@ async def messages(req: Request) -> Response:
 
 # Add route to app
 APP.router.add_post("/api/messages", messages)
-
-# Enable logging
-enable_logging()
-
 
 if __name__ == "__main__":
     try:

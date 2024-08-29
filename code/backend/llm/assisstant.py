@@ -54,7 +54,7 @@ class AssistantHandler:
         logger.debug(f"Created thread with thread id: '{thread.id}'")
         return thread.id
 
-    def send_message(self, message: str, thread_id: str) -> str | None:
+    def send_user_message(self, message: str, thread_id: str) -> str | None:
         """Send a message to the thread and return the response from the assistant.
 
         message (str): The message to be sent to the assistant.
@@ -62,7 +62,7 @@ class AssistantHandler:
         RETURNS (str): The response from the assistant is being returned.
         """
         logger.debug(
-            f"Adding message to thread with thread id: '{thread_id}' - Mesage: '{message}'"
+            f"Adding message to thread with thread id: '{thread_id}' - Message (user): '{message}'"
         )
         if thread_id is None:
             return None
@@ -82,6 +82,25 @@ class AssistantHandler:
         message = self.__get_assisstant_response(thread_id=thread_id)
 
         return message
+
+    def send_assisstant_message(self, message: str, thread_id: str) -> str | None:
+        """Send a message to the thread in teh context of the assisstant.
+
+        message (str): The message to be sent to the thread in the contex of the assisstant.
+        thread_id (str): The thread id to which the message should be sent to the assistant.
+        RETURNS (None): No return value.
+        """
+        logger.debug(
+            f"Adding message to thread with thread id: '{thread_id}' - Message (assistant): '{message}'"
+        )
+        if thread_id is None:
+            return None
+
+        message = self.client.beta.threads.messages.create(
+            thread_id=thread_id,
+            content=message,
+            role="assistant",
+        )
 
     def __wait_for_run(self, run: Run, thread_id: str) -> Run:
         """Wait for the run to complete and return the run once completed.

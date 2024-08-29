@@ -1,9 +1,8 @@
 from typing import List
 
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
-from botbuilder.schema import ChannelAccount
+from botbuilder.schema import ActionTypes, CardAction, ChannelAccount, SuggestedActions
 from llm.assisstant import assistant_handler
-from botbuilder.schema import ChannelAccount, CardAction, ActionTypes, SuggestedActions
 
 
 class AssistantBot(ActivityHandler):
@@ -23,37 +22,41 @@ class AssistantBot(ActivityHandler):
                 # Initialize thread in assistant
                 self.thread_id = assistant_handler.create_thread()
                 # Respond with welcome message
-                welcome_message = "Hello and welcome! I am your personal joke assistant."
-                await turn_context.send_activity(
-                    welcome_message
+                welcome_message = (
+                    "Hello and welcome! I am your personal joke assistant."
                 )
+                await turn_context.send_activity(welcome_message)
 
                 # Respond with suggested actions
-                suggested_topics_message = "Which topic would like to hear a joke about?"
+                suggested_topics_message = (
+                    "Which topic would like to hear a joke about?"
+                )
                 suggested_topics = MessageFactory.text(suggested_topics_message)
-                suggested_topics.suggested_actions = SuggestedActions(actions=[
-                    CardAction(
-                        type=ActionTypes.im_back,
-                        title="Cars",
-                        text="Cars",
-                        display_text="Cars",
-                        value="Cars",
-                    ),
-                    CardAction(
-                        type=ActionTypes.im_back,
-                        title="Sports",
-                        text="Sports",
-                        display_text="Sports",
-                        value="Sports",
-                    ),
-                    CardAction(
-                        type=ActionTypes.im_back,
-                        title="Atoms",
-                        text="Atoms",
-                        display_text="Atoms",
-                        value="Atoms",
-                    ),
-                ])
+                suggested_topics.suggested_actions = SuggestedActions(
+                    actions=[
+                        CardAction(
+                            type=ActionTypes.im_back,
+                            title="Cars",
+                            text="Cars",
+                            display_text="Cars",
+                            value="Cars",
+                        ),
+                        CardAction(
+                            type=ActionTypes.im_back,
+                            title="Sports",
+                            text="Sports",
+                            display_text="Sports",
+                            value="Sports",
+                        ),
+                        CardAction(
+                            type=ActionTypes.im_back,
+                            title="Atoms",
+                            text="Atoms",
+                            display_text="Atoms",
+                            value="Atoms",
+                        ),
+                    ]
+                )
                 await turn_context.send_activity(suggested_topics)
 
                 # Add messages from assisstant to thread

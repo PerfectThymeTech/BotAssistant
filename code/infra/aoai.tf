@@ -32,8 +32,9 @@ resource "azurerm_cognitive_deployment" "cognitive_deployment_gpt_4o" {
     name    = "gpt-4o"
     version = "2024-05-13"
   }
-  scale {
+  sku {
     capacity = 100
-    type     = "Standard"
+    name     = "Standard"
   }
+  version_upgrade_option = "OnceNewDefaultVersionAvailable"
 }

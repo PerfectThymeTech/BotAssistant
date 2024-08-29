@@ -5,6 +5,19 @@ provider "azurerm" {
   storage_use_azuread            = true
   # use_oidc                       = true
 
+  resource_provider_registrations = "core"
+  resource_providers_to_register = [
+    "Microsoft.Authorization",
+    "Microsoft.BotService",
+    "Microsoft.CognitiveServices",
+    "microsoft.insights",
+    "Microsoft.KeyVault",
+    "Microsoft.ManagedIdentity",
+    "Microsoft.Network",
+    "Microsoft.Resources",
+    "Microsoft.Web",
+  ]
+
   features {
     key_vault {
       recover_soft_deleted_key_vaults   = true
@@ -13,7 +26,7 @@ provider "azurerm" {
       recover_soft_deleted_secrets      = true
     }
     resource_group {
-      prevent_deletion_if_contains_resources = true
+      prevent_deletion_if_contains_resources = false
     }
   }
 }

@@ -79,8 +79,12 @@ class AssistantBot(ActivityHandler):
                 await turn_context.send_activity(suggested_topics)
 
                 # Add messages from assisstant to thread
-                assistant_handler.send_assisstant_message(welcome_message)
-                assistant_handler.send_assisstant_message(suggested_topics_message)
+                assistant_handler.send_assisstant_message(
+                    message=welcome_message, thread_id=self.thread_id
+                )
+                assistant_handler.send_assisstant_message(
+                    message=suggested_topics_message, thread_id=self.thread_id
+                )
 
     async def on_message_activity(self, turn_context: TurnContext) -> None:
         """Acts upon new messages or attachments added to a channel.

@@ -4,7 +4,7 @@ import time
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from core.config import settings
 from openai import AzureOpenAI
-from openai.types.beta.threads import Run
+from openai.types.beta.threads import ImageFileContentBlockParam, Run
 from utils import get_logger
 
 logger = get_logger(__name__)
@@ -39,7 +39,7 @@ class AssistantHandler:
         assistant = self.client.beta.assistants.create(
             name=settings.PROJECT_NAME,
             instructions=settings.AZURE_OPENAI_SYSTEM_PROMPT,
-            tools=[],
+            tools=[{"type": "file_search"}],
             model=settings.AZURE_OPENAI_MODEL_NAME,
         )
         logger.info(f"Created new assisstant with assistant id: '{assistant.id}'")
@@ -53,6 +53,15 @@ class AssistantHandler:
         thread = self.client.beta.threads.create()
         logger.debug(f"Created thread with thread id: '{thread.id}'")
         return thread.id
+
+    def create_vector_store(self, thread_id: str) -> str:
+        """Create a vector store in the assistant.
+
+        RETURNS (str): Vector store id of the newly created vector store.
+        """
+        vector_store = self.client.beta.vector_stores.create(name=thread_id)
+        logger.debug(f"Created vector store with id: '{vector_store.id}'")
+        return vector_store.id
 
     def send_user_message(self, message: str, thread_id: str) -> str | None:
         """Send a message to the thread and return the response from the assistant.
@@ -79,12 +88,12 @@ class AssistantHandler:
         )
         run = self.__wait_for_run(run=run, thread_id=thread_id)
         run = self.__check_for_tools(run=run, thread_id=thread_id)
-        message = self.__get_assisstant_response(thread_id=thread_id)
+        response = self.__get_assisstant_response(thread_id=thread_id)
 
-        return message
+        return response
 
     def send_assisstant_message(self, message: str, thread_id: str) -> str | None:
-        """Send a message to the thread in teh context of the assisstant.
+        """Send a message to the thread in the context of the assisstant.
 
         message (str): The message to be sent to the thread in the contex of the assisstant.
         thread_id (str): The thread id to which the message should be sent to the assistant.
@@ -96,10 +105,24 @@ class AssistantHandler:
         if thread_id is None:
             return None
 
-        message = self.client.beta.threads.messages.create(
+        _ = self.client.beta.threads.messages.create(
             thread_id=thread_id,
             content=message,
             role="assistant",
+        )
+
+    def send_user_file(self, file_path: str, thread_id: str) -> None:
+        """Send a file to the thread in the context of the user."""
+        file = self.client.files.create(
+            file=open(file_path, "rb"),
+            purpose="assistants",
+        )
+        _ = self.client.beta.threads.messages.create(
+            thread_id=thread_id,
+            content=[
+                ImageFileContentBlockParam(image_file=file, type="image_file"),
+            ],
+            role="user",
         )
 
     def __wait_for_run(self, run: Run, thread_id: str) -> Run:

@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     # Web app settings
     WEBSITE_NAME: str = Field(default="test", alias="WEBSITE_SITE_NAME")
     WEBSITE_INSTANCE_ID: str = Field(default="0", alias="WEBSITE_INSTANCE_ID")
+    HOME_DIRECTORY: str = Field(default="", alias="HOME")
 
     # Logging settings
     LOGGING_LEVEL: int = logging.INFO

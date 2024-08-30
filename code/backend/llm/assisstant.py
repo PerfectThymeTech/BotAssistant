@@ -4,7 +4,7 @@ import time
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from core.config import settings
 from openai import AzureOpenAI
-from openai.types.beta.threads import ImageFileContentBlockParam, Run
+from openai.types.beta.threads import ImageFileContentBlockParam, ImageFileParam, Run
 from utils import get_logger
 
 logger = get_logger(__name__)
@@ -120,7 +120,9 @@ class AssistantHandler:
         _ = self.client.beta.threads.messages.create(
             thread_id=thread_id,
             content=[
-                ImageFileContentBlockParam(image_file=file, type="image_file"),
+                ImageFileContentBlockParam(
+                    image_file=ImageFileParam(file_id=file.id), type="image_file"
+                ),
             ],
             role="user",
         )

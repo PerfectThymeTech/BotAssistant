@@ -98,7 +98,6 @@ class AssistantBot(ActivityHandler):
         ):
             # Download attachment and add it to thread
             await self.__handle_incoming_attachment(turn_context)
-            pass
         else:
             # Interact with assistant
             message = assistant_handler.send_user_message(
@@ -106,7 +105,7 @@ class AssistantBot(ActivityHandler):
                 thread_id=self.thread_id,
             )
             if message:
-                return await turn_context.send_activity(MessageFactory.text(message))
+                await turn_context.send_activity(MessageFactory.text(message))
 
     async def __handle_incoming_attachment(self, turn_context: TurnContext) -> None:
         """Handles all attachments uploaded by users.
@@ -120,6 +119,9 @@ class AssistantBot(ActivityHandler):
                 self.vector_store_ids = assistant_handler.send_user_file(
                     file_path=file_info.file_path, thread_id=self.thread_id
                 )
+        await turn_context.send_activity(
+            MessageFactory.text("The file was added to the context. How can I help?")
+        )
 
     async def __download_attachment_and_write(
         self, attachment: Attachment

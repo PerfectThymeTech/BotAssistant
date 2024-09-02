@@ -1,5 +1,6 @@
 import json
 import time
+from typing import List
 
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from core.config import settings
@@ -39,7 +40,7 @@ class AssistantHandler:
         assistant = self.client.beta.assistants.create(
             name=settings.PROJECT_NAME,
             instructions=settings.AZURE_OPENAI_SYSTEM_PROMPT,
-            tools=[],
+            tools=[{"type": "file_search"}],
             model=settings.AZURE_OPENAI_MODEL_NAME,
         )
         logger.info(f"Created new assisstant with assistant id: '{assistant.id}'")
@@ -50,9 +51,20 @@ class AssistantHandler:
 
         RETURNS (str): Thread id of the newly created thread.
         """
-        thread = self.client.beta.threads.create()
+        thread = self.client.beta.threads.create(
+            # tool_resources={"file_search": {"vector_store_ids": []}},
+        )
         logger.debug(f"Created thread with thread id: '{thread.id}'")
         return thread.id
+
+    def create_vector_store(self, thread_id: str) -> str:
+        """Create a vector store in the assistant.
+
+        RETURNS (str): Vector store id of the newly created vector store.
+        """
+        vector_store = self.client.beta.vector_stores.create(name=thread_id)
+        logger.debug(f"Created vector store with id: '{vector_store.id}'")
+        return vector_store.id
 
     def send_user_message(self, message: str, thread_id: str) -> str | None:
         """Send a message to the thread and return the response from the assistant.
@@ -79,12 +91,12 @@ class AssistantHandler:
         )
         run = self.__wait_for_run(run=run, thread_id=thread_id)
         run = self.__check_for_tools(run=run, thread_id=thread_id)
-        message = self.__get_assisstant_response(thread_id=thread_id)
+        response = self.__get_assisstant_response(thread_id=thread_id)
 
-        return message
+        return response
 
     def send_assisstant_message(self, message: str, thread_id: str) -> str | None:
-        """Send a message to the thread in teh context of the assisstant.
+        """Send a message to the thread in the context of the assisstant.
 
         message (str): The message to be sent to the thread in the contex of the assisstant.
         thread_id (str): The thread id to which the message should be sent to the assistant.
@@ -96,11 +108,44 @@ class AssistantHandler:
         if thread_id is None:
             return None
 
-        message = self.client.beta.threads.messages.create(
+        _ = self.client.beta.threads.messages.create(
             thread_id=thread_id,
             content=message,
             role="assistant",
         )
+
+    def send_user_file(self, file_path: str, thread_id: str) -> List[str]:
+        """Send a file to the thread in the context of the user and add it to the internal vector store.
+
+        file_path (str): The file path to the file that should be added to the fiel search.
+        thread_id (str): The thread id to which the message should be sent to the assistant.
+        RETURNS (List[str]): Returns the list of vector indexes.
+        """
+        # Upload file
+        logger.info(f"Uploading file '{file_path}' to assistant.")
+        file = self.client.files.create(
+            file=open(file_path, "rb"),
+            purpose="assistants",
+        )
+        # Attach file to thread
+        logger.info(f"Adding file '{file_path}' to thread '{thread_id}'")
+        _ = self.client.beta.threads.messages.create(
+            thread_id=thread_id,
+            content="File shared by the user.",
+            attachments=[{"file_id": file.id, "tools": [{"type": "file_search"}]}],
+            role="user",
+        )
+
+        # Return vector store id's
+        logger.info(f"Get thread '{thread_id}'")
+        thread = self.client.beta.threads.retrieve(
+            thread_id=thread_id,
+        )
+        vector_store_ids = thread.tool_resources.file_search.vector_store_ids
+        logger.info(
+            f"Vector indexes of thread '{thread_id}' are the following: '{vector_store_ids}'"
+        )
+        return vector_store_ids
 
     def __wait_for_run(self, run: Run, thread_id: str) -> Run:
         """Wait for the run to complete and return the run once completed.

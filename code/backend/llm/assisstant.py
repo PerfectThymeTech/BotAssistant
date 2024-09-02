@@ -5,7 +5,7 @@ from typing import List
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from core.config import settings
 from openai import AzureOpenAI
-from openai.types.beta.threads import ImageFileContentBlockParam, ImageFileParam, Run
+from openai.types.beta.threads import Run
 from utils import get_logger
 
 logger = get_logger(__name__)

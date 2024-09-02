@@ -118,7 +118,7 @@ class AssistantHandler:
         """Send a file to the thread in the context of the user and add it to the internal vector store.
 
         file_path (str): The file path to the file that should be added to the fiel search.
-        thread_id (str): The thread id to which the message should be sent to the assistant.  
+        thread_id (str): The thread id to which the message should be sent to the assistant.
         RETURNS (List[str]): Returns the list of vector indexes.
         """
         # Upload file
@@ -132,16 +132,7 @@ class AssistantHandler:
         _ = self.client.beta.threads.messages.create(
             thread_id=thread_id,
             content="File shared by the user.",
-            attachments=[
-                {
-                    "file_id": file.id,
-                    "tools": [
-                        {
-                            "type": "file_search"
-                        }
-                    ]
-                }
-            ],
+            attachments=[{"file_id": file.id, "tools": [{"type": "file_search"}]}],
             role="user",
         )
 
@@ -151,7 +142,9 @@ class AssistantHandler:
             thread_id=thread_id,
         )
         vector_store_ids = thread.tool_resources.file_search.vector_store_ids
-        logger.info(f"Vector indexes of thread '{thread_id}' are the following: '{vector_store_ids}'")
+        logger.info(
+            f"Vector indexes of thread '{thread_id}' are the following: '{vector_store_ids}'"
+        )
         return vector_store_ids
 
     def __wait_for_run(self, run: Run, thread_id: str) -> Run:

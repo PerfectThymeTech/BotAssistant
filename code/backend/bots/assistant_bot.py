@@ -3,7 +3,7 @@ import os
 import urllib
 from typing import List
 
-from botbuilder.core import ActivityHandler, MessageFactory, TurnContext
+from botbuilder.core import ActivityHandler, MessageFactory, TurnContext, UserState
 from botbuilder.schema import (
     ActionTypes,
     Attachment,
@@ -13,7 +13,7 @@ from botbuilder.schema import (
 )
 from core.config import settings
 from llm.assisstant import assistant_handler
-from models.assistant_bot_models import FileInfo
+from models.assistant_bot_models import FileInfo, UserData
 from utils import get_logger
 
 logger = get_logger(__name__)
@@ -22,6 +22,24 @@ logger = get_logger(__name__)
 class AssistantBot(ActivityHandler):
     thread_id = None
     vector_store_id = []
+
+    def __init__(self, user_state: UserState) -> None:
+        """Initailizes the Bot with a user state.
+
+        user_state (UserState): User state accessor.
+        RETURNS (None): No return value.
+        """
+        self.user_state = user_state
+        self.user_profile_accessor = self.user_state.create_property("UserData")
+
+    async def on_turn(self, turn_context: TurnContext) -> None:
+        """
+
+        turn_context (TurnContext): The turn context.
+        RETURNS (None): No return value.
+        """
+        await super().on_turn(turn_context)
+        await self.user_state.save_changes(turn_context)
 
     async def on_members_added_activity(
         self, members_added: List[ChannelAccount], turn_context: TurnContext
@@ -32,10 +50,16 @@ class AssistantBot(ActivityHandler):
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
         """
+        # Access user data
+        user_data: UserData = await self.user_profile_accessor.get(
+            turn_context, UserData
+        )
+
         for member in members_added:
             if member.id != turn_context.activity.recipient.id:
                 # Initialize thread in assistant
-                self.thread_id = assistant_handler.create_thread()
+                thread_id = assistant_handler.create_thread()
+                user_data.thread_id = thread_id
 
                 # # Initialize vector store in assistant
                 # self.vector_store_id = assistant_handler.create_vector_store(thread_id=self.thread_id)
@@ -80,10 +104,10 @@ class AssistantBot(ActivityHandler):
 
                 # Add messages from assisstant to thread
                 assistant_handler.send_assisstant_message(
-                    message=welcome_message, thread_id=self.thread_id
+                    message=welcome_message, thread_id=user_data.thread_id
                 )
                 assistant_handler.send_assisstant_message(
-                    message=suggested_topics_message, thread_id=self.thread_id
+                    message=suggested_topics_message, thread_id=user_data.thread_id
                 )
 
     async def on_message_activity(self, turn_context: TurnContext) -> None:
@@ -99,13 +123,27 @@ class AssistantBot(ActivityHandler):
             # Download attachment and add it to thread
             await self.__handle_incoming_attachment(turn_context)
         else:
-            # Interact with assistant
-            message = assistant_handler.send_user_message(
-                message=turn_context.activity.text,
-                thread_id=self.thread_id,
-            )
-            if message:
-                await turn_context.send_activity(MessageFactory.text(message))
+            # Add message to assistant thread and return response
+            self.__handle_incoming_message(turn_context)
+
+    async def __handle_incoming_message(self, turn_context: TurnContext) -> None:
+        """Handles all incoming messages sent by users.
+
+        turn_context (TurnContext): The turn context.
+        RETURNS (None): No return value.
+        """
+        # Access user data
+        user_data: UserData = await self.user_profile_accessor.get(
+            turn_context, UserData
+        )
+
+        # Interact with assistant
+        message = assistant_handler.send_user_message(
+            message=turn_context.activity.text,
+            thread_id=user_data.thread_id,
+        )
+        if message:
+            await turn_context.send_activity(MessageFactory.text(message))
 
     async def __handle_incoming_attachment(self, turn_context: TurnContext) -> None:
         """Handles all attachments uploaded by users.
@@ -113,12 +151,19 @@ class AssistantBot(ActivityHandler):
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
         """
+        # Access user data
+        user_data: UserData = await self.user_profile_accessor.get(
+            turn_context, UserData
+        )
+
         for attachment in turn_context.activity.attachments:
             file_info = await self.__download_attachment_and_write(attachment)
+
             if file_info:
                 self.vector_store_ids = assistant_handler.send_user_file(
-                    file_path=file_info.file_path, thread_id=self.thread_id
+                    file_path=file_info.file_path, thread_id=user_data.thread_id
                 )
+
         await turn_context.send_activity(
             MessageFactory.text("The file was added to the context. How can I help?")
         )

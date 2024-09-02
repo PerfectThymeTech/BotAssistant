@@ -51,6 +51,7 @@ class AssistantBot(ActivityHandler):
         RETURNS (None): No return value.
         """
         # Access user data
+        logger.info(f"Getting user data")
         user_data: UserData = await self.user_profile_accessor.get(
             turn_context, UserData
         )
@@ -58,6 +59,7 @@ class AssistantBot(ActivityHandler):
         for member in members_added:
             if member.id != turn_context.activity.recipient.id:
                 # Initialize thread in assistant
+                logger.info(f"Creating thread in assistant.")
                 thread_id = assistant_handler.create_thread()
                 user_data.thread_id = thread_id
 
@@ -65,6 +67,7 @@ class AssistantBot(ActivityHandler):
                 # self.vector_store_id = assistant_handler.create_vector_store(thread_id=self.thread_id)
 
                 # Respond with welcome message
+                logger.info(f"Creating welcome messages.")
                 welcome_message = (
                     "Hello and welcome! I am your personal joke assistant."
                 )
@@ -136,6 +139,7 @@ class AssistantBot(ActivityHandler):
         user_data: UserData = await self.user_profile_accessor.get(
             turn_context, UserData
         )
+        logger.info(f"Thread id: {user_data.thread_id}")
 
         # Interact with assistant
         message = assistant_handler.send_user_message(

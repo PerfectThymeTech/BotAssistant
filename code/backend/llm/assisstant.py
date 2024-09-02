@@ -1,5 +1,6 @@
 import json
 import time
+from typing import List
 
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from core.config import settings
@@ -50,7 +51,9 @@ class AssistantHandler:
 
         RETURNS (str): Thread id of the newly created thread.
         """
-        thread = self.client.beta.threads.create()
+        thread = self.client.beta.threads.create(
+            # tool_resources={"file_search": {"vector_store_ids": []}},
+        )
         logger.debug(f"Created thread with thread id: '{thread.id}'")
         return thread.id
 
@@ -111,21 +114,45 @@ class AssistantHandler:
             role="assistant",
         )
 
-    def send_user_file(self, file_path: str, thread_id: str) -> None:
-        """Send a file to the thread in the context of the user."""
+    def send_user_file(self, file_path: str, thread_id: str) -> List[str]:
+        """Send a file to the thread in the context of the user and add it to the internal vector store.
+
+        file_path (str): The file path to the file that should be added to the fiel search.
+        thread_id (str): The thread id to which the message should be sent to the assistant.  
+        RETURNS (List[str]): Returns the list of vector indexes.
+        """
+        # Upload file
+        logger.info(f"Uploading file '{file_path}' to assistant.")
         file = self.client.files.create(
             file=open(file_path, "rb"),
             purpose="assistants",
         )
+        # Attach file to thread
+        logger.info(f"Adding file '{file_path}' to thread '{thread_id}'")
         _ = self.client.beta.threads.messages.create(
             thread_id=thread_id,
-            content=[
-                ImageFileContentBlockParam(
-                    image_file=ImageFileParam(file_id=file.id), type="image_file"
-                ),
+            content="File shared by the user.",
+            attachments=[
+                {
+                    "file_id": file.id,
+                    "tools": [
+                        {
+                            "type": "file_search"
+                        }
+                    ]
+                }
             ],
             role="user",
         )
+
+        # Return vector store id's
+        logger.info(f"Get thread '{thread_id}'")
+        thread = self.client.beta.threads.retrieve(
+            thread_id=thread_id,
+        )
+        vector_store_ids = thread.tool_resources.file_search.vector_store_ids
+        logger.info(f"Vector indexes of thread '{thread_id}' are the following: '{vector_store_ids}'")
+        return vector_store_ids
 
     def __wait_for_run(self, run: Run, thread_id: str) -> Run:
         """Wait for the run to complete and return the run once completed.

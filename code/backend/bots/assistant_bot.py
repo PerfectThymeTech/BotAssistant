@@ -21,7 +21,7 @@ logger = get_logger(__name__)
 
 class AssistantBot(ActivityHandler):
     thread_id = None
-    vector_store_id = None
+    vector_store_id = []
 
     async def on_members_added_activity(
         self, members_added: List[ChannelAccount], turn_context: TurnContext
@@ -117,7 +117,7 @@ class AssistantBot(ActivityHandler):
         for attachment in turn_context.activity.attachments:
             file_info = await self.__download_attachment_and_write(attachment)
             if file_info:
-                assistant_handler.send_user_file(
+                self.vector_store_ids = assistant_handler.send_user_file(
                     file_path=file_info.file_path, thread_id=self.thread_id
                 )
 

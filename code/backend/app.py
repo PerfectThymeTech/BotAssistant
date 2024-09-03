@@ -20,10 +20,10 @@ ADAPTER.on_turn_error = BotUtils.on_error
 
 # Create MemoryStorage and state
 MEMORY = MemoryStorage()
-USER_STATE = UserState(MEMORY)
+USER_STATE = UserState(storage=MEMORY)
 
 # Create bot
-BOT = AssistantBot(USER_STATE)
+BOT = AssistantBot(user_state=USER_STATE)
 
 # Create app
 APP = web.Application(middlewares=[aiohttp_error_middleware])

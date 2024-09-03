@@ -20,8 +20,8 @@ logger = get_logger(__name__)
 
 
 class AssistantBot(ActivityHandler):
-    thread_id = None
-    vector_store_id = []
+    # thread_id = None
+    # vector_store_id = []
 
     def __init__(self, user_state: UserState) -> None:
         """Initailizes the Bot with a user state.
@@ -30,16 +30,7 @@ class AssistantBot(ActivityHandler):
         RETURNS (None): No return value.
         """
         self.user_state = user_state
-        self.user_profile_accessor = self.user_state.create_property("UserData")
-
-    async def on_turn(self, turn_context: TurnContext) -> None:
-        """
-
-        turn_context (TurnContext): The turn context.
-        RETURNS (None): No return value.
-        """
-        await super().on_turn(turn_context)
-        await self.user_state.save_changes(turn_context)
+        self.user_state_accessor = self.user_state.create_property("UserData")
 
     async def on_members_added_activity(
         self, members_added: List[ChannelAccount], turn_context: TurnContext
@@ -52,7 +43,7 @@ class AssistantBot(ActivityHandler):
         """
         # Access user data
         logger.info(f"Getting user data")
-        user_data: UserData = await self.user_profile_accessor.get(
+        user_data: UserData = await self.user_state_accessor.get(
             turn_context, UserData
         )
 
@@ -113,6 +104,15 @@ class AssistantBot(ActivityHandler):
                     message=suggested_topics_message, thread_id=user_data.thread_id
                 )
 
+    async def on_turn(self, turn_context: TurnContext) -> None:
+        """
+
+        turn_context (TurnContext): The turn context.
+        RETURNS (None): No return value.
+        """
+        await super().on_turn(turn_context)
+        await self.user_state.save_changes(turn_context)
+
     async def on_message_activity(self, turn_context: TurnContext) -> None:
         """Acts upon new messages or attachments added to a channel.
 
@@ -135,8 +135,9 @@ class AssistantBot(ActivityHandler):
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
         """
+        logger.info(f"Received message from user")
         # Access user data
-        user_data: UserData = await self.user_profile_accessor.get(
+        user_data: UserData = await self.user_state_accessor.get(
             turn_context, UserData
         )
         logger.info(f"Thread id: {user_data.thread_id}")
@@ -156,7 +157,7 @@ class AssistantBot(ActivityHandler):
         RETURNS (None): No return value.
         """
         # Access user data
-        user_data: UserData = await self.user_profile_accessor.get(
+        user_data: UserData = await self.user_state_accessor.get(
             turn_context, UserData
         )
 

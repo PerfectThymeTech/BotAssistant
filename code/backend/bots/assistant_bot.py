@@ -230,5 +230,5 @@ class AssistantBot(ActivityHandler):
                 file_path=file_path,
             )
         except Exception as e:
-            logger.error(f"Failed to download file '{attachment.name}'", e)
+            logger.error(f"Failed to download file '{attachment.name}'", exc_info=e)
             return None

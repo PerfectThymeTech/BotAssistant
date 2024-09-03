@@ -138,8 +138,8 @@ class AssistantHandler:
                 role="user",
             )
             success = True
-        except Exception as e:
-            logger.error(f"Could not add file '{file_path}' to the thread.", e)
+        except BadRequestError as e:
+            logger.error(f"Could not add file '{file_path}' to the thread.", exc_info=e)
             success = False
 
         # Get vector store id's

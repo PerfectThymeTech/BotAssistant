@@ -20,8 +20,6 @@ logger = get_logger(__name__)
 
 
 class AssistantBot(ActivityHandler):
-    # thread_id = None
-    # vector_store_ids = []
 
     def __init__(self, user_state: UserState) -> None:
         """Initailizes the Bot with a user state.
@@ -105,7 +103,7 @@ class AssistantBot(ActivityHandler):
                 )
 
     async def on_turn(self, turn_context: TurnContext) -> None:
-        """
+        """Called by the adapter to handle activities.
 
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
@@ -165,7 +163,7 @@ class AssistantBot(ActivityHandler):
         user_data: UserData = await self.user_state_accessor.get(turn_context, UserData)
 
         for attachment in turn_context.activity.attachments:
-            logger.debug(f"Downloading attachment and write to local storage.")
+            logger.info(f"Downloading attachment and write to local storage.")
             file_info = await self.__download_attachment_and_write(
                 attachment=attachment, thread_id=user_data.thread_id
             )

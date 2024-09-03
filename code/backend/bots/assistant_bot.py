@@ -14,6 +14,7 @@ from botbuilder.schema import (
 from core.config import settings
 from llm.assisstant import assistant_handler
 from models.assistant_bot_models import FileInfo, UserData
+from models.assistant_models import AttachmentResult
 from utils import get_logger
 
 logger = get_logger(__name__)
@@ -170,17 +171,27 @@ class AssistantBot(ActivityHandler):
 
             if file_info:
                 logger.info(f"Adding file to thread context.")
-                user_data.vector_store_ids = assistant_handler.send_user_file(
+                send_user_file_result = assistant_handler.send_user_file(
                     file_path=file_info.file_path, thread_id=user_data.thread_id
                 )
             else:
                 logger.warning(
                     f"Cannot add file to thread context. No file info provided."
                 )
+                send_user_file_result = AttachmentResult(success=False)
 
-        await turn_context.send_activity(
-            MessageFactory.text("The file was added to the context. How can I help?")
-        )
+        if send_user_file_result.success:
+            await turn_context.send_activity(
+                MessageFactory.text(
+                    "The file was added to the context. How can I help?"
+                )
+            )
+        else:
+            await turn_context.send_activity(
+                MessageFactory.text(
+                    "The file was NOT added to the context. The following file formats are only supported: [.c, .cpp, .cs, .css, .doc, .docx, .html, .java, .js, .json, .md, .pdf, .php, .pptx, .py, .rb, .sh, .tex, .ts, .txt]."
+                )
+            )
 
     async def __download_attachment_and_write(
         self, attachment: Attachment, thread_id: str
@@ -219,5 +230,5 @@ class AssistantBot(ActivityHandler):
                 file_path=file_path,
             )
         except Exception as e:
-            logger.error(f"Failed to download file '{attachment.name}'", e)
+            logger.error(f"Failed to download file '{attachment.name}'", exc_info=e)
             return None

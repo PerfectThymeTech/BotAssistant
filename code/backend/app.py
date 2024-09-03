@@ -1,6 +1,6 @@
 from aiohttp import web
 from aiohttp.web import Request, Response
-from botbuilder.core import MemoryStorage, UserState
+from botbuilder.core import MemoryStorage, ShowTypingMiddleware, UserState
 from botbuilder.core.integration import aiohttp_error_middleware
 from botbuilder.integration.aiohttp import (
     CloudAdapter,
@@ -14,9 +14,10 @@ from utils import enable_logging
 # Enable logging
 enable_logging()
 
-# Create cloud adapter
+# Create cloud adapter with middleware
 ADAPTER = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))
 ADAPTER.on_turn_error = BotUtils.on_error
+ADAPTER.use(ShowTypingMiddleware(delay=0.1, period=2))
 
 # Create MemoryStorage and state
 MEMORY = MemoryStorage()

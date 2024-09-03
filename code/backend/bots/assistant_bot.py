@@ -132,7 +132,7 @@ class AssistantBot(ActivityHandler):
             await self.__handle_incoming_attachment(turn_context)
         else:
             # Add message to assistant thread and return response
-            self.__handle_incoming_message(turn_context)
+            await self.__handle_incoming_message(turn_context)
 
     async def __handle_incoming_message(self, turn_context: TurnContext) -> None:
         """Handles all incoming messages sent by users.

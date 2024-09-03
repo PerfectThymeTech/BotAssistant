@@ -137,23 +137,25 @@ class AssistantHandler:
                 attachments=[{"file_id": file.id, "tools": [{"type": "file_search"}]}],
                 role="user",
             )
-            success = True
+            
+            # Get vector store id's
+            logger.debug(f"Get thread '{thread_id}'")
+            thread = self.client.beta.threads.retrieve(
+                thread_id=thread_id,
+            )
+            vector_store_ids = thread.tool_resources.file_search.vector_store_ids
+            logger.debug(
+                f"Vector indexes of thread '{thread_id}' are the following: '{vector_store_ids}'"
+            )
+
+            result = AttachmentResult(success=success, vector_store_ids=vector_store_ids)
         except BadRequestError as e:
             logger.error(f"Could not add file '{file_path}' to the thread.", exc_info=e)
-            success = False
-
-        # Get vector store id's
-        logger.info(f"Get thread '{thread_id}'")
-        thread = self.client.beta.threads.retrieve(
-            thread_id=thread_id,
-        )
-        vector_store_ids = thread.tool_resources.file_search.vector_store_ids
-        logger.info(
-            f"Vector indexes of thread '{thread_id}' are the following: '{vector_store_ids}'"
-        )
+            
+            result = AttachmentResult(success=False, vector_store_ids=[])
 
         # Return result
-        return AttachmentResult(success=success, vector_store_ids=vector_store_ids)
+        return result
 
     def __wait_for_run(self, run: Run, thread_id: str) -> Run:
         """Wait for the run to complete and return the run once completed.

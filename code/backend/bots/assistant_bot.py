@@ -57,9 +57,6 @@ class AssistantBot(ActivityHandler):
                 thread_id = assistant_handler.create_thread()
                 user_data.thread_id = thread_id
 
-                # # Initialize vector store in assistant
-                # self.vector_store_id = assistant_handler.create_vector_store(thread_id=self.thread_id)
-
                 # Respond with welcome message
                 logger.info(f"Creating welcome messages.")
                 welcome_message = (
@@ -106,7 +103,6 @@ class AssistantBot(ActivityHandler):
                 assistant_handler.send_assisstant_message(
                     message=suggested_topics_message, thread_id=user_data.thread_id
                 )
-        # await self.user_state.save_changes(turn_context)
 
     async def on_turn(self, turn_context: TurnContext) -> None:
         """
@@ -123,15 +119,17 @@ class AssistantBot(ActivityHandler):
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
         """
-        logger.info(f"Received input from user")
+        logger.info(f"Received input from user.")
         if (
             turn_context.activity.attachments
             and len(turn_context.activity.attachments) > 0
         ):
             # Download attachment and add it to thread
+            logger.info(f"Received files from user.")
             await self.__handle_incoming_attachment(turn_context)
         else:
             # Add message to assistant thread and return response
+            logger.info(f"Received message from user.")
             await self.__handle_incoming_message(turn_context)
 
     async def __handle_incoming_message(self, turn_context: TurnContext) -> None:
@@ -140,18 +138,22 @@ class AssistantBot(ActivityHandler):
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
         """
-        logger.info(f"Received message from user")
+        logger.debug(f"Received message from user: {turn_context.activity.text}.")
+
         # Access user data
         user_data: UserData = await self.user_state_accessor.get(turn_context, UserData)
-        logger.info(f"Thread id: {user_data.thread_id}")
 
         # Interact with assistant
+        logger.debug(f"Thread id for message: {user_data.thread_id}")
         message = assistant_handler.send_user_message(
             message=turn_context.activity.text,
             thread_id=user_data.thread_id,
         )
         if message:
+            logger.debug(f"Received response from assistant: {message}.")
             await turn_context.send_activity(MessageFactory.text(message))
+        else:
+            logger.warning(f"No response from assistant received.")
 
     async def __handle_incoming_attachment(self, turn_context: TurnContext) -> None:
         """Handles all attachments uploaded by users.
@@ -163,11 +165,19 @@ class AssistantBot(ActivityHandler):
         user_data: UserData = await self.user_state_accessor.get(turn_context, UserData)
 
         for attachment in turn_context.activity.attachments:
-            file_info = await self.__download_attachment_and_write(attachment)
+            logger.debug(f"Downloading attachment and write to local storage.")
+            file_info = await self.__download_attachment_and_write(
+                attachment=attachment, thread_id=user_data.thread_id
+            )
 
             if file_info:
+                logger.info(f"Adding file to thread context.")
                 user_data.vector_store_ids = assistant_handler.send_user_file(
                     file_path=file_info.file_path, thread_id=user_data.thread_id
+                )
+            else:
+                logger.warning(
+                    f"Cannot add file to thread context. No file info provided."
                 )
 
         await turn_context.send_activity(
@@ -175,13 +185,16 @@ class AssistantBot(ActivityHandler):
         )
 
     async def __download_attachment_and_write(
-        self, attachment: Attachment
+        self, attachment: Attachment, thread_id: str
     ) -> FileInfo | None:
         """Retrieves the attachment via the attachment's contentUrl.
 
         attachment (Attachment): Attachment sent by the user.
         RETURNS (dict): Returns a dic containing the attachment details including the keys 'filename' and 'local_path'.
         """
+        logger.debug(
+            f"Received attachment from user with name '{attachment.name}' and content type '{attachment.content_type}'."
+        )
         try:
             response = urllib.request.urlopen(attachment.content_url)
             headers = response.info()
@@ -194,7 +207,7 @@ class AssistantBot(ActivityHandler):
                 data = response.read()
 
             # Define directory
-            directory_path = os.path.join(settings.HOME_DIRECTORY, self.thread_id)
+            directory_path = os.path.join(settings.HOME_DIRECTORY, thread_id)
             file_path = os.path.join(directory_path, attachment.name)
             if not os.path.exists(directory_path):
                 os.makedirs(directory_path)

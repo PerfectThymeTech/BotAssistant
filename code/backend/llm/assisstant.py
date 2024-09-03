@@ -138,7 +138,7 @@ class AssistantHandler:
                 role="user",
             )
             success = True
-        except BadRequestError as e:
+        except Exception as e:
             logger.error(f"Could not add file '{file_path}' to the thread.", e)
             success = False
 

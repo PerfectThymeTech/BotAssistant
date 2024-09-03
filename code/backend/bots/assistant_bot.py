@@ -106,6 +106,8 @@ class AssistantBot(ActivityHandler):
                 assistant_handler.send_assisstant_message(
                     message=suggested_topics_message, thread_id=user_data.thread_id
                 )
+        
+        await self.user_state.save_changes(turn_context)
 
     async def on_turn(self, turn_context: TurnContext) -> None:
         """
@@ -122,6 +124,7 @@ class AssistantBot(ActivityHandler):
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
         """
+        logger.info(f"Received input from user")
         if (
             turn_context.activity.attachments
             and len(turn_context.activity.attachments) > 0

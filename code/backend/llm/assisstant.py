@@ -4,7 +4,8 @@ from typing import List
 
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from core.config import settings
-from openai import AzureOpenAI
+from models.assistant_models import AttachmentResult
+from openai import AzureOpenAI, BadRequestError
 from openai.types.beta.threads import Run
 from utils import get_logger
 
@@ -114,12 +115,12 @@ class AssistantHandler:
             role="assistant",
         )
 
-    def send_user_file(self, file_path: str, thread_id: str) -> List[str]:
+    def send_user_file(self, file_path: str, thread_id: str) -> AttachmentResult:
         """Send a file to the thread in the context of the user and add it to the internal vector store.
 
         file_path (str): The file path to the file that should be added to the fiel search.
         thread_id (str): The thread id to which the message should be sent to the assistant.
-        RETURNS (List[str]): Returns the list of vector indexes.
+        RETURNS (AttachmentResult): Returns the list of vector indexes and an indicator specifying whether adding the file was successful.
         """
         # Upload file
         logger.info(f"Uploading file '{file_path}' to assistant.")
@@ -129,14 +130,19 @@ class AssistantHandler:
         )
         # Attach file to thread
         logger.info(f"Adding file '{file_path}' to thread '{thread_id}'")
-        _ = self.client.beta.threads.messages.create(
-            thread_id=thread_id,
-            content="File shared by the user.",
-            attachments=[{"file_id": file.id, "tools": [{"type": "file_search"}]}],
-            role="user",
-        )
+        try:
+            _ = self.client.beta.threads.messages.create(
+                thread_id=thread_id,
+                content="File shared by the user.",
+                attachments=[{"file_id": file.id, "tools": [{"type": "file_search"}]}],
+                role="user",
+            )
+            success = True
+        except BadRequestError as e:
+            logger.error(f"Could not add file '{file_path}' to the thread.", e)
+            success = False
 
-        # Return vector store id's
+        # Get vector store id's
         logger.info(f"Get thread '{thread_id}'")
         thread = self.client.beta.threads.retrieve(
             thread_id=thread_id,
@@ -145,7 +151,9 @@ class AssistantHandler:
         logger.info(
             f"Vector indexes of thread '{thread_id}' are the following: '{vector_store_ids}'"
         )
-        return vector_store_ids
+
+        # Return result
+        return AttachmentResult(success=success, vector_store_ids=vector_store_ids)
 
     def __wait_for_run(self, run: Run, thread_id: str) -> Run:
         """Wait for the run to complete and return the run once completed.

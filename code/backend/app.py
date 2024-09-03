@@ -17,7 +17,7 @@ enable_logging()
 # Create cloud adapter with middleware
 ADAPTER = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))
 ADAPTER.on_turn_error = BotUtils.on_error
-ADAPTER.use(ShowTypingMiddleware(delay=0.5, period=2))
+ADAPTER.use(ShowTypingMiddleware(delay=0.1, period=2))
 
 # Create MemoryStorage and state
 MEMORY = MemoryStorage()

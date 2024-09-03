@@ -137,7 +137,7 @@ class AssistantHandler:
                 attachments=[{"file_id": file.id, "tools": [{"type": "file_search"}]}],
                 role="user",
             )
-            
+
             # Get vector store id's
             logger.debug(f"Get thread '{thread_id}'")
             thread = self.client.beta.threads.retrieve(
@@ -148,10 +148,12 @@ class AssistantHandler:
                 f"Vector indexes of thread '{thread_id}' are the following: '{vector_store_ids}'"
             )
 
-            result = AttachmentResult(success=success, vector_store_ids=vector_store_ids)
+            result = AttachmentResult(
+                success=success, vector_store_ids=vector_store_ids
+            )
         except BadRequestError as e:
             logger.error(f"Could not add file '{file_path}' to the thread.", exc_info=e)
-            
+
             result = AttachmentResult(success=False, vector_store_ids=[])
 
         # Return result

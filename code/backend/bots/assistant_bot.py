@@ -106,8 +106,7 @@ class AssistantBot(ActivityHandler):
                 assistant_handler.send_assisstant_message(
                     message=suggested_topics_message, thread_id=user_data.thread_id
                 )
-        
-        await self.user_state.save_changes(turn_context)
+        # await self.user_state.save_changes(turn_context)
 
     async def on_turn(self, turn_context: TurnContext) -> None:
         """

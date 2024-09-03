@@ -10,4 +10,4 @@ class FileInfo(BaseModel):
 
 class UserData(BaseModel):
     thread_id: str | None = None
-    vector_store_id: List[str] = []
+    vector_store_ids: List[str] = []

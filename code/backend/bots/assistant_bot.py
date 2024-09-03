@@ -21,7 +21,7 @@ logger = get_logger(__name__)
 
 class AssistantBot(ActivityHandler):
     # thread_id = None
-    # vector_store_id = []
+    # vector_store_ids = []
 
     def __init__(self, user_state: UserState) -> None:
         """Initailizes the Bot with a user state.
@@ -29,6 +29,11 @@ class AssistantBot(ActivityHandler):
         user_state (UserState): User state accessor.
         RETURNS (None): No return value.
         """
+        if user_state is None:
+            raise TypeError(
+                "Missing user state parameter. 'user_state' is required but None was given."
+            )
+
         self.user_state = user_state
         self.user_state_accessor = self.user_state.create_property("UserData")
 
@@ -43,9 +48,7 @@ class AssistantBot(ActivityHandler):
         """
         # Access user data
         logger.info(f"Getting user data")
-        user_data: UserData = await self.user_state_accessor.get(
-            turn_context, UserData
-        )
+        user_data: UserData = await self.user_state_accessor.get(turn_context, UserData)
 
         for member in members_added:
             if member.id != turn_context.activity.recipient.id:
@@ -137,9 +140,7 @@ class AssistantBot(ActivityHandler):
         """
         logger.info(f"Received message from user")
         # Access user data
-        user_data: UserData = await self.user_state_accessor.get(
-            turn_context, UserData
-        )
+        user_data: UserData = await self.user_state_accessor.get(turn_context, UserData)
         logger.info(f"Thread id: {user_data.thread_id}")
 
         # Interact with assistant
@@ -157,15 +158,13 @@ class AssistantBot(ActivityHandler):
         RETURNS (None): No return value.
         """
         # Access user data
-        user_data: UserData = await self.user_state_accessor.get(
-            turn_context, UserData
-        )
+        user_data: UserData = await self.user_state_accessor.get(turn_context, UserData)
 
         for attachment in turn_context.activity.attachments:
             file_info = await self.__download_attachment_and_write(attachment)
 
             if file_info:
-                self.vector_store_ids = assistant_handler.send_user_file(
+                user_data.vector_store_ids = assistant_handler.send_user_file(
                     file_path=file_info.file_path, thread_id=user_data.thread_id
                 )
 

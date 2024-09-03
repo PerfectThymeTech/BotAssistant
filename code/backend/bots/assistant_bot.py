@@ -6,6 +6,7 @@ from typing import List
 from botbuilder.core import ActivityHandler, MessageFactory, TurnContext, UserState
 from botbuilder.schema import (
     ActionTypes,
+    ActivityTypes,
     Attachment,
     CardAction,
     ChannelAccount,

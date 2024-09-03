@@ -35,6 +35,7 @@ if settings.DEBUG:
         credentials=MicrosoftAppCredentials(
             app_id=settings.APP_ID,
             password=settings.APP_PASSWORD,
+            channel_auth_tenant=settings.APP_TENANTID,
         ),
     )
     ADAPTER.use(INSPECTION_MIDDLEWARE)

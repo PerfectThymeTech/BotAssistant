@@ -3,7 +3,8 @@ import os
 import urllib
 from typing import List
 
-from botbuilder.core import ActivityHandler, MessageFactory, TurnContext, UserState
+from botbuilder.core import MessageFactory, TurnContext, UserState
+from botbuilder.core.teams import TeamsActivityHandler
 from botbuilder.schema import (
     ActionTypes,
     Attachment,
@@ -20,7 +21,7 @@ from utils import get_logger
 logger = get_logger(__name__)
 
 
-class AssistantBot(ActivityHandler):
+class AssistantBot(TeamsActivityHandler):
 
     def __init__(self, user_state: UserState) -> None:
         """Initailizes the Bot with a user state.

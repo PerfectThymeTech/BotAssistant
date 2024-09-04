@@ -37,5 +37,10 @@ class Settings(BaseSettings):
     AZURE_OPENAI_MODEL_NAME: str
     AZURE_OPENAI_ASSISTANT_ID: str
 
+    # Cosmos DB settings
+    AZURE_COSMOS_ENDPOINT: str
+    AZURE_COSMOS_DATABASE_ID: str
+    AZURE_COSMOS_CONTAINER_ID: str
+
 
 settings = Settings()

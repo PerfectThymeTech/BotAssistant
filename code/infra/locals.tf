@@ -23,6 +23,11 @@ locals {
     AZURE_OPENAI_MODEL_NAME    = azurerm_cognitive_deployment.cognitive_deployment_gpt_4o.name
     AZURE_OPENAI_SYSTEM_PROMPT = data.local_file.file_system_prompt.content
     AZURE_OPENAI_ASSISTANT_ID  = ""
+
+    # Cosmos DB settings
+    AZURE_COSMOS_ENDPOINT     = module.cosmosdb_account.cosmosdb_account_endpoint
+    AZURE_COSMOS_DATABASE_ID  = ""
+    AZURE_COSMOS_CONTAINER_ID = ""
   }
   web_app_app_settings = merge(local.app_settings_default, var.web_app_app_settings)
 

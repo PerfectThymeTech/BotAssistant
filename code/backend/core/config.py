@@ -39,8 +39,9 @@ class Settings(BaseSettings):
 
     # Cosmos DB settings
     AZURE_COSMOS_ENDPOINT: str
+    AZURE_COSMOS_KEY: str
     AZURE_COSMOS_DATABASE_ID: str
-    AZURE_COSMOS_CONTAINER_ID: str
+    AZURE_COSMOS_CONTAINER_ID: str = "user-state"
 
 
 settings = Settings()

@@ -36,19 +36,26 @@ module "cosmosdb_account" {
       zone_redundant    = false
     }
   ]
-  cosmosdb_account_kind                    = "GlobalDocumentDB"
-  cosmosdb_account_mongo_server_version    = null
-  cosmosdb_account_partition_merge_enabled = false
-  diagnostics_configurations               = []
-  subnet_id                                = azapi_resource.subnet_private_endpoints.id
-  connectivity_delay_in_seconds            = 0
-  private_endpoint_subresource_names       = ["Sql"]
-  private_dns_zone_id_cosmos_sql           = var.private_dns_zone_id_cosmos_sql
-  private_dns_zone_id_cosmos_mongodb       = ""
-  private_dns_zone_id_cosmos_cassandra     = ""
-  private_dns_zone_id_cosmos_gremlin       = ""
-  private_dns_zone_id_cosmos_table         = ""
-  private_dns_zone_id_cosmos_analytical    = ""
-  private_dns_zone_id_cosmos_coordinator   = ""
-  customer_managed_key                     = null
+  cosmosdb_account_kind                          = "GlobalDocumentDB"
+  cosmosdb_account_local_authentication_disabled = false
+  cosmosdb_account_mongo_server_version          = null
+  cosmosdb_account_partition_merge_enabled       = false
+  diagnostics_configurations                     = []
+  subnet_id                                      = azapi_resource.subnet_private_endpoints.id
+  connectivity_delay_in_seconds                  = 0
+  private_endpoint_subresource_names             = ["Sql"]
+  private_dns_zone_id_cosmos_sql                 = var.private_dns_zone_id_cosmos_sql
+  private_dns_zone_id_cosmos_mongodb             = ""
+  private_dns_zone_id_cosmos_cassandra           = ""
+  private_dns_zone_id_cosmos_gremlin             = ""
+  private_dns_zone_id_cosmos_table               = ""
+  private_dns_zone_id_cosmos_analytical          = ""
+  private_dns_zone_id_cosmos_coordinator         = ""
+  customer_managed_key                           = null
+}
+
+resource "azurerm_cosmosdb_sql_database" "cosmosdb_sql_database" {
+  name                = "BotDb"
+  account_name        = module.cosmosdb_account.cosmosdb_account_name
+  resource_group_name = azurerm_resource_group.resource_group.name
 }

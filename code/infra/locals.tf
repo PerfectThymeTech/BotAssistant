@@ -25,7 +25,7 @@ locals {
     AZURE_OPENAI_ASSISTANT_ID  = ""
 
     # Cosmos DB settings
-    AZURE_COSMOS_ENDPOINT     = module.cosmosdb_account.cosmosdb_account_endpoint
+    AZURE_COSMOS_ENDPOINT     = "https://${module.cosmosdb_account.cosmosdb_account_endpoint}"
     AZURE_COSMOS_KEY          = module.cosmosdb_account.cosmosdb_account_primary_key
     AZURE_COSMOS_DATABASE_ID  = azurerm_cosmosdb_sql_database.cosmosdb_sql_database.id
     AZURE_COSMOS_CONTAINER_ID = "user-state"

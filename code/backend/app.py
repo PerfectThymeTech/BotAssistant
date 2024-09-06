@@ -1,7 +1,7 @@
 from aiohttp import web
 from aiohttp.web import Request, Response
 from botbuilder.azure import CosmosDbPartitionedConfig, CosmosDbPartitionedStorage
-from botbuilder.core import MemoryStorage, ShowTypingMiddleware, UserState
+from botbuilder.core import ShowTypingMiddleware, UserState
 from botbuilder.core.inspection import InspectionMiddleware, InspectionState
 from botbuilder.core.integration import aiohttp_error_middleware
 from botbuilder.integration.aiohttp import (
@@ -18,19 +18,18 @@ from utils import enable_logging
 enable_logging()
 
 # Create storage and state
-# STORAGE = CosmosDbPartitionedStorage(
-#     config=CosmosDbPartitionedConfig(
-#         cosmos_db_endpoint=CONFIG.AZURE_COSMOS_ENDPOINT,
-#         auth_key=CONFIG.AZURE_COSMOS_KEY,
-#         database_id=CONFIG.AZURE_COSMOS_DATABASE_ID,
-#         container_id=CONFIG.AZURE_COSMOS_CONTAINER_ID,
-#         cosmos_client_options=None,
-#         container_throughput=400,
-#         key_suffix="",
-#         compatibility_mode=False,
-#     )
-# )
-STORAGE = MemoryStorage()
+STORAGE = CosmosDbPartitionedStorage(
+    config=CosmosDbPartitionedConfig(
+        cosmos_db_endpoint=CONFIG.AZURE_COSMOS_ENDPOINT,
+        auth_key=CONFIG.AZURE_COSMOS_KEY,
+        database_id=CONFIG.AZURE_COSMOS_DATABASE_ID,
+        container_id=CONFIG.AZURE_COSMOS_CONTAINER_ID,
+        cosmos_client_options=None,
+        container_throughput=400,
+        key_suffix="",
+        compatibility_mode=False,
+    )
+)
 USER_STATE = UserState(storage=STORAGE)
 
 # Create cloud adapter with middleware

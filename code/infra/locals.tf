@@ -62,6 +62,6 @@ locals {
   customer_managed_key = null
 
   # Other locals
-  system_prompt_code_path = "${path.module}/../../docs/SystemPrompt.txt"
+  system_prompt_code_path     = "${path.module}/../../docs/SystemPrompt.txt"
   cosmosdb_sql_container_name = "user-state"
 }

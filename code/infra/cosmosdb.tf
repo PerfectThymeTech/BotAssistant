@@ -90,7 +90,7 @@ resource "azurerm_cosmosdb_sql_container" "cosmosdb_sql_container" {
     "/id"
   ]
   # partition_key_version = 1
-  # throughput = 
+  # throughput =
   # unique_key {
   #   paths = []
   # }

@@ -25,7 +25,7 @@ STORAGE = CosmosDbPartitionedStorage(
         database_id=CONFIG.AZURE_COSMOS_DATABASE_ID,
         container_id=CONFIG.AZURE_COSMOS_CONTAINER_ID,
         cosmos_client_options=None,
-        container_throughput=400,
+        container_throughput=None,
         key_suffix="",
         compatibility_mode=False,
     )

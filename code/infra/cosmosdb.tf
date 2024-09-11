@@ -75,7 +75,7 @@ resource "azurerm_cosmosdb_sql_container" "cosmosdb_sql_container" {
     conflict_resolution_path = "/_ts"
     mode                     = "LastWriterWins"
   }
-  default_ttl = Off
+  # default_ttl = -1
   indexing_policy {
     indexing_mode = "consistent"
     included_path {

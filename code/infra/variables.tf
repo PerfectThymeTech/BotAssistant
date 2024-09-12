@@ -174,3 +174,14 @@ variable "private_dns_zone_id_open_ai" {
     error_message = "Please specify a valid resource ID for the private DNS Zone."
   }
 }
+
+variable "private_dns_zone_id_cosmos_sql" {
+  description = "Specifies the resource ID of the private DNS zone for cosmos db sql. Not required if DNS A-records get created via Azure Policy."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = var.private_dns_zone_id_cosmos_sql == "" || (length(split("/", var.private_dns_zone_id_cosmos_sql)) == 9 && endswith(var.private_dns_zone_id_cosmos_sql, "privatelink.documents.azure.com"))
+    error_message = "Please specify a valid resource ID for the private DNS Zone."
+  }
+}

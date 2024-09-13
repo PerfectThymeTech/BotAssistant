@@ -10,7 +10,9 @@ from dialogs.logout_dialog import LogoutDialog
 
 class LoginDialog(LogoutDialog):
     def __init__(self, connection_name: str) -> None:
-        super(LoginDialog, self).__init__(connection_name=connection_name)
+        super(LoginDialog, self).__init__(
+            dialog_id=LoginDialog.__name__, connection_name=connection_name
+        )
 
         self.add_dialog(
             dialog=OAuthPrompt(

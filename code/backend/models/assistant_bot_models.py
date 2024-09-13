@@ -11,3 +11,8 @@ class FileInfo(BaseModel):
 class UserData(BaseModel):
     thread_id: str | None = None
     vector_store_ids: List[str] = []
+
+
+class ConversationData(BaseModel):
+    timestamp: str
+    channel_id: str

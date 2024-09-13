@@ -1,7 +1,12 @@
 from aiohttp import web
 from aiohttp.web import Request, Response
 from botbuilder.azure import CosmosDbPartitionedConfig, CosmosDbPartitionedStorage
-from botbuilder.core import ShowTypingMiddleware, UserState
+from botbuilder.core import (
+    ConversationState,
+    MemoryStorage,
+    ShowTypingMiddleware,
+    UserState,
+)
 from botbuilder.core.inspection import InspectionMiddleware, InspectionState
 from botbuilder.core.integration import aiohttp_error_middleware
 from botbuilder.integration.aiohttp import (
@@ -10,8 +15,10 @@ from botbuilder.integration.aiohttp import (
 )
 from botframework.connector.auth import MicrosoftAppCredentials
 from bots.assistant_bot import AssistantBot
+from bots.auth_bot import AuthBot
 from bots.utils_bot import BotUtils
 from core.config import settings as CONFIG
+from dialogs.login_dialog import LoginDialog
 from utils import enable_logging
 
 # Enable logging
@@ -31,6 +38,7 @@ STORAGE = CosmosDbPartitionedStorage(
     )
 )
 USER_STATE = UserState(storage=STORAGE)
+CONVERSATION_STATE = ConversationState(storage=MemoryStorage())
 
 # Create cloud adapter with middleware
 ADAPTER = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))
@@ -51,8 +59,14 @@ if CONFIG.DEBUG:
     )
     ADAPTER.use(INSPECTION_MIDDLEWARE)
 
+# Create dialog
+DIALOG = LoginDialog(connection_name=CONFIG.CONNECTION_NAME)
+
 # Create bot
-BOT = AssistantBot(user_state=USER_STATE)
+# BOT = AssistantBot(user_state=USER_STATE)
+BOT = AuthBot(
+    conversation_state=CONVERSATION_STATE, user_state=USER_STATE, dialog=DIALOG
+)
 
 # Create app
 APP = web.Application(middlewares=[aiohttp_error_middleware])

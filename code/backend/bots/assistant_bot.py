@@ -3,8 +3,13 @@ import os
 import urllib
 from typing import List
 
-from botbuilder.core import MessageFactory, TurnContext, UserState
-from botbuilder.core.teams import TeamsActivityHandler
+from botbuilder.core import (
+    ActivityHandler,
+    ConversationState,
+    MessageFactory,
+    TurnContext,
+    UserState,
+)
 from botbuilder.schema import (
     ActionTypes,
     Attachment,
@@ -14,27 +19,38 @@ from botbuilder.schema import (
 )
 from core.config import settings
 from llm.assisstant import assistant_handler
-from models.assistant_bot_models import FileInfo, UserData
+from models.assistant_bot_models import ConversationData, FileInfo, UserData
 from models.assistant_models import AttachmentResult
 from utils import get_logger
 
 logger = get_logger(__name__)
 
 
-class AssistantBot(TeamsActivityHandler):
+class AssistantBot(ActivityHandler):
 
-    def __init__(self, user_state: UserState) -> None:
+    def __init__(
+        self, conversation_state: ConversationState, user_state: UserState
+    ) -> None:
         """Initailizes the Bot with a user state.
 
+        conversation_state (ConversationState): Conversation state accessor.
         user_state (UserState): User state accessor.
         RETURNS (None): No return value.
         """
+        if conversation_state is None:
+            raise TypeError(
+                "Missing conversation state parameter. 'conversation_state' is required but None was given."
+            )
         if user_state is None:
             raise TypeError(
                 "Missing user state parameter. 'user_state' is required but None was given."
             )
 
+        self.conversation_state = conversation_state
         self.user_state = user_state
+        self.conversation_state_accessor = self.conversation_state.create_property(
+            "ConversationData"
+        )
         self.user_state_accessor = self.user_state.create_property("UserData")
 
     async def on_members_added_activity(
@@ -111,7 +127,8 @@ class AssistantBot(TeamsActivityHandler):
         RETURNS (None): No return value.
         """
         await super().on_turn(turn_context)
-        await self.user_state.save_changes(turn_context)
+        await self.conversation_state.save_changes(turn_context)
+        await self.user_state.save_changes(turn_context, force=False)
 
     async def on_message_activity(self, turn_context: TurnContext) -> None:
         """Acts upon new messages or attachments added to a channel.

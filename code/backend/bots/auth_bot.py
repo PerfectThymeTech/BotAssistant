@@ -23,7 +23,7 @@ class AuthBot(AssistantBot):
         user_state (UserState): User state accessor.
         RETURNS (None): No return value.
         """
-        super(AuthBot, self).__init__(conversation_state, user_state)
+        super(AuthBot, self).__init__(conversation_state, user_state, dialog)
         self.dialog = dialog
 
     async def on_members_added_activity(

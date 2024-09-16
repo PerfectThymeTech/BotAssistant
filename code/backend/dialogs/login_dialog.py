@@ -4,6 +4,7 @@ from botbuilder.dialogs import (
     WaterfallDialog,
     WaterfallStepContext,
 )
+from botbuilder.dialogs.dialog_context import DialogContext
 from botbuilder.dialogs.prompts import ConfirmPrompt, OAuthPrompt, OAuthPromptSettings
 from dialogs.logout_dialog import LogoutDialog
 from utils import get_logger
@@ -49,6 +50,11 @@ class LoginDialog(LogoutDialog):
                 ],
             )
         )
+
+    async def on_begin_dialog(
+        self, inner_dc: DialogContext, options: object
+    ) -> DialogTurnResult:
+        return await super().on_begin_dialog(inner_dc=inner_dc, options=options)
 
     async def prompt_step(self, step_context: WaterfallStepContext) -> DialogTurnResult:
         """Handles the prompt step of the login dialog.

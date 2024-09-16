@@ -39,7 +39,7 @@ STORAGE = MemoryStorage()
 #     )
 # )
 USER_STATE = UserState(storage=STORAGE)
-CONVERSATION_STATE = ConversationState(storage=STORAGE) # MemoryStorage())
+CONVERSATION_STATE = ConversationState(storage=STORAGE)  # MemoryStorage())
 
 # Create cloud adapter with middleware
 ADAPTER = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))

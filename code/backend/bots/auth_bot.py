@@ -38,7 +38,6 @@ class AuthBot(AssistantBot):
         await super(AuthBot, self).on_members_added_activity(
             members_added, turn_context
         )
-        await turn_context.send_activity("Type any message to get logged in.")
 
     async def on_turn(self, turn_context: TurnContext) -> None:
         """Called by the adapter to handle activities.

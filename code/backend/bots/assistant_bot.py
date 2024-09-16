@@ -10,6 +10,7 @@ from botbuilder.core import (
     TurnContext,
     UserState,
 )
+from botbuilder.dialogs import Dialog
 from botbuilder.schema import (
     ActionTypes,
     Attachment,
@@ -18,6 +19,7 @@ from botbuilder.schema import (
     SuggestedActions,
 )
 from core.config import settings
+from dialogs.dialog_helper import DialogHelper
 from llm.assisstant import assistant_handler
 from models.assistant_bot_models import ConversationData, FileInfo, UserData
 from models.assistant_models import AttachmentResult
@@ -29,7 +31,10 @@ logger = get_logger(__name__)
 class AssistantBot(ActivityHandler):
 
     def __init__(
-        self, conversation_state: ConversationState, user_state: UserState
+        self,
+        conversation_state: ConversationState,
+        user_state: UserState,
+        dialog: Dialog,
     ) -> None:
         """Initailizes the Bot with states.
 
@@ -46,6 +51,7 @@ class AssistantBot(ActivityHandler):
                 "Missing user state parameter. 'user_state' is required but None was given."
             )
 
+        self.dialog = dialog
         self.conversation_state = conversation_state
         self.user_state = user_state
         self.conversation_state_accessor = self.conversation_state.create_property(
@@ -79,6 +85,7 @@ class AssistantBot(ActivityHandler):
                     "Hello and welcome! I am your personal joke assistant."
                 )
                 await turn_context.send_activity(welcome_message)
+                await turn_context.send_activity("Type any message to get logged in.")
 
                 # Respond with suggested actions
                 suggested_topics_message = (
@@ -136,7 +143,14 @@ class AssistantBot(ActivityHandler):
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
         """
-        logger.info(f"Received input from user.")
+        logger.info(f"Received input from user. Starting dialog to handle login.")
+        await DialogHelper.run_dialog(
+            dialog=self.dialog,
+            turn_context=turn_context,
+            accessor=self.conversation_state_accessor,
+        )
+
+        logger.info(f"Handle message from user.")
         if (
             turn_context.activity.attachments
             and len(turn_context.activity.attachments) > 0

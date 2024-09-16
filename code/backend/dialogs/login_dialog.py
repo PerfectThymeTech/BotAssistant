@@ -22,6 +22,7 @@ class LoginDialog(LogoutDialog):
         super(LoginDialog, self).__init__(
             dialog_id=LoginDialog.__name__, connection_name=connection_name
         )
+        self.dialog_id = "WaterfallDialog"
 
         self.add_dialog(
             dialog=OAuthPrompt(
@@ -43,7 +44,7 @@ class LoginDialog(LogoutDialog):
 
         self.add_dialog(
             dialog=WaterfallDialog(
-                dialog_id="WaterfallDialog",
+                dialog_id=self.dialog_id,
                 steps=[
                     self.prompt_step,
                     self.login_step,
@@ -51,10 +52,10 @@ class LoginDialog(LogoutDialog):
             )
         )
 
-    async def on_begin_dialog(
-        self, inner_dc: DialogContext, options: object
-    ) -> DialogTurnResult:
-        return await super().on_begin_dialog(inner_dc=inner_dc, options=options)
+    # async def on_begin_dialog(
+    #     self, inner_dc: DialogContext, options: object
+    # ) -> DialogTurnResult:
+    #     return await super().on_begin_dialog(inner_dc=inner_dc, options=options)
 
     async def prompt_step(self, step_context: WaterfallStepContext) -> DialogTurnResult:
         """Handles the prompt step of the login dialog.

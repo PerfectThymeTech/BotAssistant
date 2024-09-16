@@ -9,7 +9,7 @@ module "cosmosdb_account" {
   resource_group_name                                 = azurerm_resource_group.resource_group.name
   tags                                                = var.tags
   cosmosdb_account_name                               = "${local.prefix}-cosmos001"
-  cosmosdb_account_access_key_metadata_writes_enabled = true
+  cosmosdb_account_access_key_metadata_writes_enabled = false
   cosmosdb_account_analytical_storage_enabled         = false
   cosmosdb_account_automatic_failover_enabled         = false
   cosmosdb_account_backup = {

@@ -31,7 +31,7 @@ class AssistantBot(ActivityHandler):
     def __init__(
         self, conversation_state: ConversationState, user_state: UserState
     ) -> None:
-        """Initailizes the Bot with a user state.
+        """Initailizes the Bot with states.
 
         conversation_state (ConversationState): Conversation state accessor.
         user_state (UserState): User state accessor.

@@ -17,8 +17,8 @@ class Settings(BaseSettings):
     HOME_DIRECTORY: str = Field(default="", alias="HOME")
 
     # Logging settings
-    LOGGING_LEVEL: int = logging.INFO
-    DEBUG: bool = False
+    LOGGING_LEVEL: int = logging.DEBUG
+    DEBUG: bool = True
     APPLICATIONINSIGHTS_CONNECTION_STRING: str = Field(
         default="", alias="APPLICATIONINSIGHTS_CONNECTION_STRING"
     )

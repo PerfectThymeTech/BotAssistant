@@ -22,7 +22,7 @@ class LoginDialog(LogoutDialog):
         super(LoginDialog, self).__init__(
             dialog_id=LoginDialog.__name__, connection_name=connection_name
         )
-        self.dialog_id = "WaterfallDialog"
+        self.initial_dialog_id = "WaterfallDialog"
 
         self.add_dialog(
             dialog=OAuthPrompt(
@@ -44,7 +44,7 @@ class LoginDialog(LogoutDialog):
 
         self.add_dialog(
             dialog=WaterfallDialog(
-                dialog_id=self.dialog_id,
+                dialog_id=self.initial_dialog_id,
                 steps=[
                     self.prompt_step,
                     self.login_step,

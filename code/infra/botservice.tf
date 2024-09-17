@@ -33,8 +33,8 @@ module "bot_service" {
   customer_managed_key                         = local.customer_managed_key
 }
 
-resource "azurerm_bot_connection" "bot_connection_aad" {
-  name                = "aad"
+resource "azurerm_bot_connection" "bot_connection_aadv2_oauth" {
+  name                = "aadv2-oauth"
   bot_name            = reverse(split(module.bot_service.bot_service_id, "/"))[0]
   location            = "global"
   resource_group_name = azurerm_resource_group.resource_group.name
@@ -42,7 +42,7 @@ resource "azurerm_bot_connection" "bot_connection_aad" {
   client_id     = var.bot_oauth_client_id
   client_secret = var.bot_oauth_client_secret
   parameters = {
-    "TenantId" = data.azurerm_client_config.current.tenant_id
+    "tenantId" = data.azurerm_client_config.current.tenant_id
   }
   service_provider_name = "Aadv2" # supported = wunderlist,google,pinterest,appFigures,facebook,SkypeForBusiness,outlook,SharePointOnline,Aadb2c,Aadv2,Aadv2WithCerts,FactSet,linkedin,trello,SharepointServer,oauth2,slack,zendesk,DynamicsCrmOnline,Aad,smartsheet,flickr,Office365,onedrive,basecamp,instagram,mailchimp,Office365User,echosign,live,oauth2generic,spotify,tumblr,AWeber,marketo,dropbox,box,yammer,intuit,uservoice,salesforce,todoist,github,docusign,stripe,bitly,lithium,sugarcrm
   scopes                = join(" ", var.bot_oauth_scopes)

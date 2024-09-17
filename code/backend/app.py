@@ -61,7 +61,9 @@ if CONFIG.DEBUG:
     ADAPTER.use(INSPECTION_MIDDLEWARE)
 
 # Create dialog
-DIALOG = LoginDialog(connection_name=CONFIG.OAUTH_CONNECTION_NAME, user_state=USER_STATE, conversation_state=)
+DIALOG = LoginDialog(
+    connection_name=CONFIG.OAUTH_CONNECTION_NAME, user_state=USER_STATE
+)
 
 # Create bot
 # BOT = AssistantBot(user_state=USER_STATE)

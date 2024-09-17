@@ -41,8 +41,26 @@ variable "tags" {
 
 # Service variables
 variable "web_app_app_settings" {
-  description = "Specifies the videoindexer id"
+  description = "Specifies the web app settings."
   type        = map(string)
+  sensitive   = false
+}
+
+variable "bot_oauth_client_id" {
+  description = "Specifies the client id of the Entra ID oauth app."
+  type        = string
+  sensitive   = true
+}
+
+variable "bot_oauth_client_secret" {
+  description = "Specifies the client secret of the Entra ID oauth app."
+  type        = string
+  sensitive   = true
+}
+
+variable "bot_oauth_scopes" {
+  description = "Specifies the scopes of the Entra ID oauth app."
+  type        = list(string)
   sensitive   = false
 }
 

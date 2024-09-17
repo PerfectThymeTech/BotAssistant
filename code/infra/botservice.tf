@@ -32,3 +32,18 @@ module "bot_service" {
   private_dns_zone_id_bot_framework_token      = var.private_dns_zone_id_bot_framework_token
   customer_managed_key                         = local.customer_managed_key
 }
+
+resource "azurerm_bot_connection" "bot_connection_aad" {
+  name                = "aad"
+  bot_name            = reverse(split(module.bot_service.bot_service_id, "/"))[0]
+  location            = var.location
+  resource_group_name = azurerm_resource_group.resource_group.name
+
+  client_id     = var.bot_oauth_client_id
+  client_secret = var.bot_oauth_client_secret
+  parameters = {
+    "TenantId" = data.azurerm_client_config.current.tenant_id
+  }
+  service_provider_name = "Azure Active Directory v2" # serviceProviderId = "30dd229c-58e3-4a48-bdfd-91ec48eb906c"
+  scopes                = join(" ", var.bot_oauth_scopes)
+}

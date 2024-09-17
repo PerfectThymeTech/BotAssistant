@@ -1,3 +1,5 @@
+data "azurerm_client_config" "current" {}
+
 data "azurerm_virtual_network" "virtual_network" {
   name                = local.virtual_network.name
   resource_group_name = local.virtual_network.resource_group_name

@@ -29,6 +29,17 @@ class LogoutDialog(ComponentDialog):
             return result
         return await super().on_begin_dialog(inner_dc=inner_dc, options=options)
 
+    async def on_continue_dialog(self, inner_dc: DialogContext) -> DialogTurnResult:
+        """Called when the dialog is continued.
+
+        inner_dc (DialogContext): Inner dialog context within the dialog.
+        RETURNS (DialogTurnResult): Dialog step result.
+        """
+        result = await self._interrupt(inner_dc=inner_dc)
+        if result:
+            return result
+        return await super().on_continue_dialog(inner_dc=inner_dc)
+
     async def __interrupt(self, inner_dc: DialogContext) -> DialogTurnResult:
         """Called when the dialog is started and pushed onto the parent's dialog stack.
 

@@ -34,7 +34,6 @@ class AssistantBot(ActivityHandler):
         self,
         conversation_state: ConversationState,
         user_state: UserState,
-        dialog: Dialog,
     ) -> None:
         """Initailizes the Bot with states.
 
@@ -51,7 +50,6 @@ class AssistantBot(ActivityHandler):
                 "Missing user state parameter. 'user_state' is required but None was given."
             )
 
-        self.dialog = dialog
         self.conversation_state = conversation_state
         self.user_state = user_state
         self.conversation_state_accessor = self.conversation_state.create_property(
@@ -143,13 +141,6 @@ class AssistantBot(ActivityHandler):
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
         """
-        logger.info(f"Received input from user. Starting dialog to handle login.")
-        await DialogHelper.run_dialog(
-            dialog=self.dialog,
-            turn_context=turn_context,
-            accessor=self.conversation_state_accessor,
-        )
-
         logger.info(f"Handle message from user.")
         if (
             turn_context.activity.attachments

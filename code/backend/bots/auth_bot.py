@@ -5,6 +5,7 @@ from botbuilder.dialogs import Dialog
 from botbuilder.schema import ChannelAccount
 from bots.assistant_bot import AssistantBot
 from dialogs.dialog_helper import DialogHelper
+from models.assistant_bot_models import UserData
 from utils import get_logger
 
 logger = get_logger(__name__)
@@ -15,7 +16,7 @@ class AuthBot(AssistantBot):
         self,
         conversation_state: ConversationState,
         user_state: UserState,
-        dialog: Dialog,
+        login_dialog: Dialog,
     ) -> None:
         """Initailizes the Bot with states.
 
@@ -23,8 +24,8 @@ class AuthBot(AssistantBot):
         user_state (UserState): User state accessor.
         RETURNS (None): No return value.
         """
-        super(AuthBot, self).__init__(conversation_state, user_state, dialog)
-        self.dialog = dialog
+        super(AuthBot, self).__init__(conversation_state, user_state)
+        self.login_dialog = login_dialog
 
     async def on_members_added_activity(
         self, members_added: List[ChannelAccount], turn_context: TurnContext
@@ -52,8 +53,20 @@ class AuthBot(AssistantBot):
 
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
-        """
-        await super(AuthBot, self).on_message_activity(turn_context)
+        """        
+        # Access user data
+        logger.info(f"Getting user data")
+        user_data: UserData = await self.user_state_accessor.get(turn_context, UserData)
+
+        if not user_data.login_succeeded:
+            logger.info(f"Starting dialog to handle login.")
+            await DialogHelper.run_dialog(
+                dialog=self.login_dialog,
+                turn_context=turn_context,
+                accessor=self.conversation_state_accessor,
+            )
+        else:
+            await super(AuthBot, self).on_message_activity(turn_context)
 
     async def on_token_response_event(self, turn_context: TurnContext):
         """Invoked when a tokens/response event is received.
@@ -63,7 +76,7 @@ class AuthBot(AssistantBot):
         """
         logger.info("Token Reponse event received. Starting dialog to handle login.")
         await DialogHelper.run_dialog(
-            dialog=self.dialog,
+            dialog=self.login_dialog,
             turn_context=turn_context,
             accessor=self.conversation_state_accessor,
         )

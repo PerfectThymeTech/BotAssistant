@@ -53,7 +53,7 @@ class AuthBot(AssistantBot):
 
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
-        """        
+        """
         # Access user data
         logger.info(f"Getting user data")
         user_data: UserData = await self.user_state_accessor.get(turn_context, UserData)

@@ -8,9 +8,7 @@ tags = {
 }
 
 # Service variables
-web_app_app_settings    = {}
-bot_oauth_client_id     = ""
-bot_oauth_client_secret = ""
+web_app_app_settings = {}
 bot_oauth_scopes = [
   "openid",
   "profile",

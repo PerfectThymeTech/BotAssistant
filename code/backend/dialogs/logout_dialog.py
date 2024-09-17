@@ -12,7 +12,7 @@ class LogoutDialog(ComponentDialog):
         connection_name (str): Specifies the connection name.
         RETURNS (None): No return value.
         """
-        super(LogoutDialog, self).__init__(dialog_id)
+        super(LogoutDialog, self).__init__(dialog_id=dialog_id)
         self.connection_name = connection_name
 
     async def on_begin_dialog(

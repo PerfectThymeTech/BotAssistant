@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     APP_TENANTID: str = Field(default="", alias="MICROSOFT_APP_TENANTID")
     APP_TYPE: str = Field(default="", alias="MICROSOFT_APP_TYPE")
     MANAGED_IDENTITY_CLIENT_ID: str
-    CONNECTION_NAME: str = "MyConnection"
+    OAUTH_CONNECTION_NAME: str
 
     # Azure Open AI settings
     AZURE_OPEN_AI_ENDPOINT: str

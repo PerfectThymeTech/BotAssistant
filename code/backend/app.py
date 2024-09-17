@@ -61,14 +61,15 @@ if CONFIG.DEBUG:
     ADAPTER.use(INSPECTION_MIDDLEWARE)
 
 # Create dialog
-DIALOG = LoginDialog(
+LOGIN_DIALOG = LoginDialog(
     connection_name=CONFIG.OAUTH_CONNECTION_NAME, user_state=USER_STATE
 )
 
 # Create bot
-# BOT = AssistantBot(user_state=USER_STATE)
 BOT = AuthBot(
-    conversation_state=CONVERSATION_STATE, user_state=USER_STATE, dialog=DIALOG
+    conversation_state=CONVERSATION_STATE,
+    user_state=USER_STATE,
+    login_dialog=LOGIN_DIALOG,
 )
 
 # Create app

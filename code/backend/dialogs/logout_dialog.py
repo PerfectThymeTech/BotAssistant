@@ -35,7 +35,7 @@ class LogoutDialog(ComponentDialog):
         inner_dc (DialogContext): Inner dialog context within the dialog.
         RETURNS (DialogTurnResult): Dialog step result.
         """
-        result = await self._interrupt(inner_dc=inner_dc)
+        result = await self.__interrupt(inner_dc=inner_dc)
         if result:
             return result
         return await super().on_continue_dialog(inner_dc=inner_dc)

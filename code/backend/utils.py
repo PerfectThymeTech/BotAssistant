@@ -20,6 +20,7 @@ def enable_logging() -> None:
     # Configure azure monitor logs
     configure_azure_monitor(
         connection_string=settings.APPLICATIONINSIGHTS_CONNECTION_STRING,
+        # Use below configuration to turn instrumentations on/off
         # instrumentation_options={
         #     "azure_sdk": {"enabled": True},
         #     "django": {"enabled": False},

@@ -2,14 +2,12 @@ from botbuilder.core import BotFrameworkAdapter, UserState
 from botbuilder.dialogs import (
     ComponentDialog,
     DialogTurnResult,
-    PromptOptions,
     WaterfallDialog,
     WaterfallStepContext,
 )
 from botbuilder.dialogs.dialog_context import DialogContext
 from botbuilder.dialogs.prompts import ConfirmPrompt, OAuthPrompt, OAuthPromptSettings
 from botbuilder.schema import ActivityTypes
-from dialogs.logout_dialog import LogoutDialog
 from models.assistant_bot_models import UserData
 from utils import get_logger
 

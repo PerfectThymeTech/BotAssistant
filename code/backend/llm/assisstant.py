@@ -149,7 +149,7 @@ class AssistantHandler:
             )
 
             result = AttachmentResult(
-                success=success, vector_store_ids=vector_store_ids
+                success=True, vector_store_ids=vector_store_ids
             )
         except BadRequestError as e:
             logger.error(f"Could not add file '{file_path}' to the thread.", exc_info=e)

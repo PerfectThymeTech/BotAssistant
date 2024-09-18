@@ -14,7 +14,6 @@ from botbuilder.integration.aiohttp import (
     ConfigurationBotFrameworkAuthentication,
 )
 from botframework.connector.auth import MicrosoftAppCredentials
-from bots.assistant_bot import AssistantBot
 from bots.auth_bot import AuthBot
 from bots.utils_bot import BotUtils
 from core.config import settings as CONFIG

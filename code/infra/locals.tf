@@ -16,7 +16,7 @@ locals {
     MICROSOFT_APP_TENANTID     = module.user_assigned_identity.user_assigned_identity_tenant_id
     MICROSOFT_APP_TYPE         = "UserAssignedMSI"
     MANAGED_IDENTITY_CLIENT_ID = module.user_assigned_identity.user_assigned_identity_client_id
-    OAUTH_CONNECTION_NAME      = azurerm_bot_connection.bot_connection_aadv2_oauth.name
+    OAUTH_CONNECTION_NAME      = local.bot_connection_aadv2_oauth_name
 
     # Azure open ai app settings
     AZURE_OPEN_AI_ENDPOINT     = module.azure_open_ai.cognitive_account_endpoint
@@ -63,6 +63,7 @@ locals {
   customer_managed_key = null
 
   # Other locals
-  system_prompt_code_path     = "${path.module}/../../docs/SystemPrompt.txt"
-  cosmosdb_sql_container_name = "user-state"
+  system_prompt_code_path         = "${path.module}/../../docs/SystemPrompt.txt"
+  cosmosdb_sql_container_name     = "user-state"
+  bot_connection_aadv2_oauth_name = "aadv2-oauth"
 }

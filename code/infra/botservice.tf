@@ -34,7 +34,7 @@ module "bot_service" {
 }
 
 resource "azurerm_bot_connection" "bot_connection_aadv2_oauth" {
-  name                = "aadv2-oauth"
+  name                = local.bot_connection_aadv2_oauth_name
   bot_name            = module.bot_service.bot_service_name
   location            = "global"
   resource_group_name = azurerm_resource_group.resource_group.name

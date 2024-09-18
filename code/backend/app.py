@@ -24,21 +24,20 @@ from utils import enable_logging
 enable_logging()
 
 # Create storage and state
-STORAGE = MemoryStorage()
-# STORAGE = CosmosDbPartitionedStorage(
-#     config=CosmosDbPartitionedConfig(
-#         cosmos_db_endpoint=CONFIG.AZURE_COSMOS_ENDPOINT,
-#         auth_key=CONFIG.AZURE_COSMOS_KEY,
-#         database_id=CONFIG.AZURE_COSMOS_DATABASE_ID,
-#         container_id=CONFIG.AZURE_COSMOS_CONTAINER_ID,
-#         cosmos_client_options=None,
-#         container_throughput=None,
-#         key_suffix="",
-#         compatibility_mode=False,
-#     )
-# )
+STORAGE = CosmosDbPartitionedStorage(
+    config=CosmosDbPartitionedConfig(
+        cosmos_db_endpoint=CONFIG.AZURE_COSMOS_ENDPOINT,
+        auth_key=CONFIG.AZURE_COSMOS_KEY,
+        database_id=CONFIG.AZURE_COSMOS_DATABASE_ID,
+        container_id=CONFIG.AZURE_COSMOS_CONTAINER_ID,
+        cosmos_client_options=None,
+        container_throughput=None,
+        key_suffix="",
+        compatibility_mode=False,
+    )
+)
 USER_STATE = UserState(storage=STORAGE)
-CONVERSATION_STATE = ConversationState(storage=STORAGE)  # MemoryStorage())
+CONVERSATION_STATE = ConversationState(storage=STORAGE)
 
 # Create cloud adapter with middleware
 ADAPTER = CloudAdapter(ConfigurationBotFrameworkAuthentication(CONFIG))

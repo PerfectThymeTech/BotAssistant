@@ -91,7 +91,8 @@ resource "azuread_application" "application" {
   }
   web {
     redirect_uris = [
-      local.redirect_uris[var.data_residency]
+      local.redirect_uris[var.data_residency],
+      # "https://login.microsoftonline.com",
     ]
   }
 }

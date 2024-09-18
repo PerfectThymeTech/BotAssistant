@@ -35,7 +35,7 @@ module "bot_service" {
 
 resource "azurerm_bot_connection" "bot_connection_aadv2_oauth" {
   name                = "aadv2-oauth"
-  bot_name            = "${local.prefix}-bot001" # reverse(split(module.bot_service.bot_service_id, "/"))[0]
+  bot_name            = module.bot_service.bot_service_name
   location            = "global"
   resource_group_name = azurerm_resource_group.resource_group.name
 

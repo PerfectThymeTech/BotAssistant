@@ -148,9 +148,7 @@ class AssistantHandler:
                 f"Vector indexes of thread '{thread_id}' are the following: '{vector_store_ids}'"
             )
 
-            result = AttachmentResult(
-                success=True, vector_store_ids=vector_store_ids
-            )
+            result = AttachmentResult(success=True, vector_store_ids=vector_store_ids)
         except BadRequestError as e:
             logger.error(f"Could not add file '{file_path}' to the thread.", exc_info=e)
 

@@ -10,7 +10,6 @@ from botbuilder.core import (
     TurnContext,
     UserState,
 )
-from botbuilder.dialogs import Dialog
 from botbuilder.schema import (
     ActionTypes,
     Attachment,
@@ -19,9 +18,8 @@ from botbuilder.schema import (
     SuggestedActions,
 )
 from core.config import settings
-from dialogs.dialog_helper import DialogHelper
 from llm.assisstant import assistant_handler
-from models.assistant_bot_models import ConversationData, FileInfo, UserData
+from models.assistant_bot_models import FileInfo, UserData
 from models.assistant_models import AttachmentResult
 from utils import get_logger
 

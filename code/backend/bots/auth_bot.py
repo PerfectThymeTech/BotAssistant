@@ -39,6 +39,11 @@ class AuthBot(AssistantBot):
         await super(AuthBot, self).on_members_added_activity(
             members_added, turn_context
         )
+        await DialogHelper.run_dialog(
+            dialog=self.login_dialog,
+            turn_context=turn_context,
+            accessor=self.conversation_state_accessor,
+        )
 
     async def on_turn(self, turn_context: TurnContext) -> None:
         """Called by the adapter to handle activities.
@@ -65,7 +70,8 @@ class AuthBot(AssistantBot):
                 turn_context=turn_context,
                 accessor=self.conversation_state_accessor,
             )
-        else:
+
+        if user_data.login_succeeded:
             await super(AuthBot, self).on_message_activity(turn_context)
 
     async def on_token_response_event(self, turn_context: TurnContext):

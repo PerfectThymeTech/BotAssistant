@@ -41,7 +41,7 @@ class LoginDialog(ComponentDialog):
                 dialog_id=OAuthPrompt.__name__,
                 settings=OAuthPromptSettings(
                     connection_name=connection_name,
-                    text="Please sign in.",
+                    text="Please sign in to use the bot.",
                     title="Sign In",
                     timeout=300000,
                 ),
@@ -114,10 +114,12 @@ class LoginDialog(ComponentDialog):
         if step_context.result:
             logger.info(f"Successful login.")
             logger.debug(f"Successful login with token: '{step_context.result.token}'.")
-            user_data.login_succeeded = True
-            await step_context.context.send_activity(
-                "Thank you! You have successfully logged in."
-            )
+
+            if not user_data.login_succeeded:
+                user_data.login_succeeded = True
+                await step_context.context.send_activity(
+                    "Thank you! You have successfully logged in."
+                )
 
         else:
             logger.info(f"Unsuccessful login.")

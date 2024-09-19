@@ -18,7 +18,7 @@ class BotUtils:
         RETURNS (None): No return value.
         """
         # Log error
-        logger.error("Unexpected error within the application", error)
+        logger.error("Unexpected error within the application", exc_info=error)
 
         # Send a message to the user
         await turn_context.send_activity(

@@ -3,7 +3,13 @@ import os
 import urllib
 from typing import List
 
-from botbuilder.core import ActivityHandler, MessageFactory, TurnContext, UserState
+from botbuilder.core import (
+    ActivityHandler,
+    ConversationState,
+    MessageFactory,
+    TurnContext,
+    UserState,
+)
 from botbuilder.schema import (
     ActionTypes,
     Attachment,
@@ -22,18 +28,31 @@ logger = get_logger(__name__)
 
 class AssistantBot(ActivityHandler):
 
-    def __init__(self, user_state: UserState) -> None:
-        """Initailizes the Bot with a user state.
+    def __init__(
+        self,
+        conversation_state: ConversationState,
+        user_state: UserState,
+    ) -> None:
+        """Initailizes the Bot with states.
 
+        conversation_state (ConversationState): Conversation state accessor.
         user_state (UserState): User state accessor.
         RETURNS (None): No return value.
         """
+        if conversation_state is None:
+            raise TypeError(
+                "Missing conversation state parameter. 'conversation_state' is required but None was given."
+            )
         if user_state is None:
             raise TypeError(
                 "Missing user state parameter. 'user_state' is required but None was given."
             )
 
+        self.conversation_state = conversation_state
         self.user_state = user_state
+        self.dialog_state_accessor = self.conversation_state.create_property(
+            "DialogState"
+        )
         self.user_state_accessor = self.user_state.create_property("UserData")
 
     async def on_members_added_activity(
@@ -62,6 +81,7 @@ class AssistantBot(ActivityHandler):
                     "Hello and welcome! I am your personal joke assistant."
                 )
                 await turn_context.send_activity(welcome_message)
+                await turn_context.send_activity("Type any message to get logged in.")
 
                 # Respond with suggested actions
                 suggested_topics_message = (
@@ -110,7 +130,8 @@ class AssistantBot(ActivityHandler):
         RETURNS (None): No return value.
         """
         await super().on_turn(turn_context)
-        await self.user_state.save_changes(turn_context)
+        await self.conversation_state.save_changes(turn_context)
+        await self.user_state.save_changes(turn_context, force=False)
 
     async def on_message_activity(self, turn_context: TurnContext) -> None:
         """Acts upon new messages or attachments added to a channel.
@@ -118,7 +139,7 @@ class AssistantBot(ActivityHandler):
         turn_context (TurnContext): The turn context.
         RETURNS (None): No return value.
         """
-        logger.info(f"Received input from user.")
+        logger.info(f"Handle message from user.")
         if (
             turn_context.activity.attachments
             and len(turn_context.activity.attachments) > 0
@@ -181,6 +202,7 @@ class AssistantBot(ActivityHandler):
                 send_user_file_result = AttachmentResult(success=False)
 
         if send_user_file_result.success:
+            user_data.vector_store_ids = send_user_file_result.vector_store_ids
             await turn_context.send_activity(
                 MessageFactory.text(
                     "The file was added to the context. How can I help?"

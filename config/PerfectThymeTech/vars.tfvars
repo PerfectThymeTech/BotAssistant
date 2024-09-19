@@ -9,6 +9,12 @@ tags = {
 
 # Service variables
 web_app_app_settings = {}
+bot_oauth_scopes = [
+  "openid",
+  "profile",
+  "User.Read",
+  "User.ReadBasic.All",
+]
 
 # Logging variables
 log_analytics_workspace_id = "/subscriptions/8f171ff9-2b5b-4f0f-aed5-7fa360a1d094/resourceGroups/DefaultResourceGroup-NEU/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-8f171ff9-2b5b-4f0f-aed5-7fa360a1d094-NEU"

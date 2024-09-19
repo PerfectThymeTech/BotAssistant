@@ -16,6 +16,7 @@ locals {
     MICROSOFT_APP_TENANTID     = module.user_assigned_identity.user_assigned_identity_tenant_id
     MICROSOFT_APP_TYPE         = "UserAssignedMSI"
     MANAGED_IDENTITY_CLIENT_ID = module.user_assigned_identity.user_assigned_identity_client_id
+    OAUTH_CONNECTION_NAME      = local.bot_connection_aadv2_oauth_name
 
     # Azure open ai app settings
     AZURE_OPEN_AI_ENDPOINT     = module.azure_open_ai.cognitive_account_endpoint
@@ -28,7 +29,7 @@ locals {
     AZURE_COSMOS_ENDPOINT     = module.cosmosdb_account.cosmosdb_account_endpoint
     AZURE_COSMOS_KEY          = module.cosmosdb_account.cosmosdb_account_primary_key
     AZURE_COSMOS_DATABASE_ID  = azurerm_cosmosdb_sql_database.cosmosdb_sql_database.name
-    AZURE_COSMOS_CONTAINER_ID = azurerm_cosmosdb_sql_container.cosmosdb_sql_container.name
+    AZURE_COSMOS_CONTAINER_ID = local.cosmosdb_sql_container_name
   }
   web_app_app_settings = merge(local.app_settings_default, var.web_app_app_settings)
 
@@ -62,6 +63,7 @@ locals {
   customer_managed_key = null
 
   # Other locals
-  system_prompt_code_path     = "${path.module}/../../docs/SystemPrompt.txt"
-  cosmosdb_sql_container_name = "user-state"
+  system_prompt_code_path         = "${path.module}/../../docs/SystemPrompt.txt"
+  cosmosdb_sql_container_name     = "bot-data"
+  bot_connection_aadv2_oauth_name = "aadv2-oauth"
 }

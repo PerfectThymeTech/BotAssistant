@@ -17,8 +17,8 @@ class Settings(BaseSettings):
     HOME_DIRECTORY: str = Field(default="", alias="HOME")
 
     # Logging settings
-    LOGGING_LEVEL: int = logging.INFO
-    DEBUG: bool = False
+    LOGGING_LEVEL: int = logging.DEBUG
+    DEBUG: bool = True
     APPLICATIONINSIGHTS_CONNECTION_STRING: str = Field(
         default="", alias="APPLICATIONINSIGHTS_CONNECTION_STRING"
     )
@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     APP_TENANTID: str = Field(default="", alias="MICROSOFT_APP_TENANTID")
     APP_TYPE: str = Field(default="", alias="MICROSOFT_APP_TYPE")
     MANAGED_IDENTITY_CLIENT_ID: str
+    OAUTH_CONNECTION_NAME: str
 
     # Azure Open AI settings
     AZURE_OPEN_AI_ENDPOINT: str

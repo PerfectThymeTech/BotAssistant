@@ -20,7 +20,7 @@ module "cosmosdb_account" {
     interval_in_minutes = null
   }
   cosmosdb_account_capabilities = [
-    # "EnableServerless"
+    # "EnableServerless" # TODO: Validate in a follow-up PR
   ]
   cosmosdb_account_capacity_total_throughput_limit = -1
   cosmosdb_account_consistency_policy = {
@@ -64,38 +64,3 @@ resource "azurerm_cosmosdb_sql_database" "cosmosdb_sql_database" {
     max_throughput = 1000
   }
 }
-
-# resource "azurerm_cosmosdb_sql_container" "cosmosdb_sql_container" {
-#   name                = local.cosmosdb_sql_container_name
-#   database_name       = azurerm_cosmosdb_sql_database.cosmosdb_sql_database.name
-#   account_name        = module.cosmosdb_account.cosmosdb_account_name
-#   resource_group_name = azurerm_resource_group.resource_group.name
-
-#   analytical_storage_ttl = null
-#   # autoscale_settings {
-#   #   max_throughput = 400
-#   # }
-#   conflict_resolution_policy {
-#     conflict_resolution_path = "/_ts"
-#     mode                     = "LastWriterWins"
-#   }
-#   # default_ttl = -1
-#   indexing_policy {
-#     indexing_mode = "consistent"
-#     included_path {
-#       path = "/*"
-#     }
-#     excluded_path {
-#       path = "/\"_etag\"/?"
-#     }
-#   }
-#   partition_key_kind = "Hash"
-#   partition_key_paths = [
-#     "/id"
-#   ]
-#   # partition_key_version = 1
-#   # throughput =
-#   # unique_key {
-#   #   paths = []
-#   # }
-# }

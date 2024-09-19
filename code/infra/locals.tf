@@ -29,7 +29,7 @@ locals {
     AZURE_COSMOS_ENDPOINT     = module.cosmosdb_account.cosmosdb_account_endpoint
     AZURE_COSMOS_KEY          = module.cosmosdb_account.cosmosdb_account_primary_key
     AZURE_COSMOS_DATABASE_ID  = azurerm_cosmosdb_sql_database.cosmosdb_sql_database.name
-    AZURE_COSMOS_CONTAINER_ID = local.cosmosdb_sql_container_name # azurerm_cosmosdb_sql_container.cosmosdb_sql_container.name
+    AZURE_COSMOS_CONTAINER_ID = local.cosmosdb_sql_container_name
   }
   web_app_app_settings = merge(local.app_settings_default, var.web_app_app_settings)
 

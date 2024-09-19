@@ -63,7 +63,7 @@ class AuthBot(AssistantBot):
             await DialogHelper.run_dialog(
                 dialog=self.login_dialog,
                 turn_context=turn_context,
-                accessor=self.conversation_state_accessor,
+                accessor=self.dialog_state_accessor,
             )
 
         if user_data.login_succeeded:
@@ -79,7 +79,7 @@ class AuthBot(AssistantBot):
         await DialogHelper.run_dialog(
             dialog=self.login_dialog,
             turn_context=turn_context,
-            accessor=self.conversation_state_accessor,
+            accessor=self.dialog_state_accessor,
         )
 
     # async def on_teams_signin_verify_state(self, turn_context: TurnContext):

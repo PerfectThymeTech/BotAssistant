@@ -50,8 +50,8 @@ class AssistantBot(ActivityHandler):
 
         self.conversation_state = conversation_state
         self.user_state = user_state
-        self.conversation_state_accessor = self.conversation_state.create_property(
-            "ConversationData"
+        self.dialog_state_accessor = self.conversation_state.create_property(
+            "DialogState"
         )
         self.user_state_accessor = self.user_state.create_property("UserData")
 

@@ -202,6 +202,7 @@ class AssistantBot(ActivityHandler):
                 send_user_file_result = AttachmentResult(success=False)
 
         if send_user_file_result.success:
+            user_data.vector_store_ids = send_user_file_result.vector_store_ids
             await turn_context.send_activity(
                 MessageFactory.text(
                     "The file was added to the context. How can I help?"

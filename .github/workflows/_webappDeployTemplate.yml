@@ -90,3 +90,4 @@ jobs:
           app-name: ${{ inputs.webapp_name }}
           package: ${{ inputs.webapp_directory }}
           startup-command: "gunicorn --bind 0.0.0.0 --worker-class aiohttp.worker.GunicornWebWorker --timeout 600 app:APP"
+          # restart: true

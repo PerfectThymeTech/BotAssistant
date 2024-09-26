@@ -34,7 +34,6 @@ jobs:
       subscription_id: "1fdab118-1638-419a-8b12-06c9543714a0"
     secrets:
       CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       BOT_OAUTH_CLIENT_ID: ${{ secrets.BOT_OAUTH_CLIENT_ID }}
       BOT_OAUTH_CLIENT_SECRET: ${{ secrets.BOT_OAUTH_CLIENT_SECRET }}
 

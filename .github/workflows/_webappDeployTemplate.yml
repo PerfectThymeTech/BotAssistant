@@ -34,6 +34,10 @@ on:
         required: true
         description: "Specifies the client id."
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deployment:
     name: Web App Deploy

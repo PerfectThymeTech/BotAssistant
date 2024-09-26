@@ -6,6 +6,7 @@ on:
     paths:
       - "**.py"
       - "code/backend/**"
+      - "config/**"
       - "tests/**"
       - "requirements.txt"
 
@@ -15,6 +16,7 @@ on:
     paths:
       - "**.py"
       - "code/backend/**"
+      - "config/**"
       - "tests/**"
       - "requirements.txt"
 

@@ -76,11 +76,12 @@ jobs:
         env:
           WEBAPP_DIRECTORY: ${{ inputs.webapp_directory }}
 
+      # Azure login
       - name: Azure login
         id: azure_login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ inputs.tenant_id }}
           subscription-id: ${{ inputs.subscription_id }}
 

@@ -18,6 +18,27 @@ provider "azurerm" {
   }
 }
 
+provider "azurerm" {
+  alias                           = "management"
+  disable_correlation_request_id  = false
+  environment                     = "public"
+  resource_provider_registrations = "none"
+  storage_use_azuread             = true
+  subscription_id                 = local.log_analytics_workspace.subscription_id
+
+  features {
+    key_vault {
+      recover_soft_deleted_key_vaults   = true
+      recover_soft_deleted_certificates = true
+      recover_soft_deleted_keys         = true
+      recover_soft_deleted_secrets      = true
+    }
+    resource_group {
+      prevent_deletion_if_contains_resources = true
+    }
+  }
+}
+
 provider "azapi" {
   default_location               = var.location
   default_tags                   = var.tags

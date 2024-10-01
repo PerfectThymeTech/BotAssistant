@@ -1,21 +1,9 @@
 provider "azurerm" {
-  disable_correlation_request_id = false
-  environment                    = "public"
-  storage_use_azuread            = true
-  # use_oidc                       = true
-
+  disable_correlation_request_id  = false
+  environment                     = "public"
   resource_provider_registrations = "none"
-  resource_providers_to_register = [
-    "Microsoft.Authorization",
-    "Microsoft.BotService",
-    "Microsoft.CognitiveServices",
-    "microsoft.insights",
-    "Microsoft.KeyVault",
-    "Microsoft.ManagedIdentity",
-    "Microsoft.Network",
-    "Microsoft.Resources",
-    "Microsoft.Web",
-  ]
+  resource_providers_to_register  = local.resource_providers_to_register
+  storage_use_azuread             = true
 
   features {
     key_vault {
@@ -36,5 +24,4 @@ provider "azapi" {
   disable_correlation_request_id = false
   environment                    = "public"
   skip_provider_registration     = false
-  # use_oidc                       = true
 }

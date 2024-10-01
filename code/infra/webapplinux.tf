@@ -100,10 +100,19 @@ resource "azurerm_private_endpoint" "linux_web_app_private_endpoint" {
     subresource_names              = ["sites"]
   }
   subnet_id = azapi_resource.subnet_private_endpoints.id
-  private_dns_zone_group {
-    name = "${azurerm_linux_web_app.linux_web_app.name}-arecord"
-    private_dns_zone_ids = [
-      var.private_dns_zone_id_sites
+  dynamic "private_dns_zone_group" {
+    for_each = var.private_dns_zone_id_sites == "" ? [] : [1]
+    content {
+      name = "${azurerm_linux_web_app.linux_web_app.name}-arecord"
+      private_dns_zone_ids = [
+        var.private_dns_zone_id_sites
+      ]
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      private_dns_zone_group
     ]
   }
 }

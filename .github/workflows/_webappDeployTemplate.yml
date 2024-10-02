@@ -33,9 +33,10 @@ on:
       CLIENT_ID:
         required: true
         description: "Specifies the client id."
-      CLIENT_SECRET:
-        required: true
-        description: "Specifies the client secret."
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deployment:
@@ -75,12 +76,14 @@ jobs:
         env:
           WEBAPP_DIRECTORY: ${{ inputs.webapp_directory }}
 
-      # Login to Azure
-      - name: Azure Login
+      # Azure login
+      - name: Azure login
         id: azure_login
         uses: azure/login@v2
         with:
-          creds:  '{"clientId":"${{ secrets.CLIENT_ID }}","clientSecret":"${{ secrets.CLIENT_SECRET }}","subscriptionId":"${{ inputs.subscription_id }}","tenantId":"${{ inputs.tenant_id }}"}'
+          client-id: ${{ secrets.CLIENT_ID }}
+          tenant-id: ${{ inputs.tenant_id }}
+          subscription-id: ${{ inputs.subscription_id }}
 
       # Deploy Web App
       - name: Deploy Web App

@@ -1,6 +1,17 @@
 locals {
   # Naming locals
   prefix = "${lower(var.prefix)}-${var.environment}"
+  resource_providers_to_register = [
+    "Microsoft.Authorization",
+    "Microsoft.BotService",
+    "Microsoft.CognitiveServices",
+    "microsoft.insights",
+    "Microsoft.KeyVault",
+    "Microsoft.ManagedIdentity",
+    "Microsoft.Network",
+    "Microsoft.Resources",
+    "Microsoft.Web",
+  ]
 
   # Web app locals
   app_settings_default = {
@@ -47,6 +58,7 @@ locals {
     name                = split("/", var.route_table_id)[8]
   }
   log_analytics_workspace = {
+    subscription_id     = split("/", var.log_analytics_workspace_id)[2]
     resource_group_name = split("/", var.log_analytics_workspace_id)[4]
     name                = split("/", var.log_analytics_workspace_id)[8]
   }

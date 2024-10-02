@@ -7,6 +7,7 @@ on:
       - "**.tf"
       - "code/infra/**"
       - "code/backend/**"
+      - "config/**"
       - ".github/workflows/terraform.yml"
 
   pull_request:
@@ -16,6 +17,7 @@ on:
       - "**.tf"
       - "code/infra/**"
       - "code/backend/**"
+      - "config/**"
       - ".github/workflows/terraform.yml"
 
 jobs:
@@ -25,14 +27,13 @@ jobs:
     with:
       environment: "dev"
       config: "PerfectThymeTech"
-      terraform_version: "1.9.5"
+      terraform_version: "1.9.6"
       node_version: 20
       working_directory: "./code/infra"
-      tenant_id: "3556be79-2979-4b19-a1af-4dd4e6d9ed7e"
-      subscription_id: "8f171ff9-2b5b-4f0f-aed5-7fa360a1d094"
+      tenant_id: "37963dd4-f4e6-40f8-a7d6-24b97919e452"
+      subscription_id: "1fdab118-1638-419a-8b12-06c9543714a0"
     secrets:
       CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       BOT_OAUTH_CLIENT_ID: ${{ secrets.BOT_OAUTH_CLIENT_ID }}
       BOT_OAUTH_CLIENT_SECRET: ${{ secrets.BOT_OAUTH_CLIENT_SECRET }}
 
@@ -43,13 +44,12 @@ jobs:
     with:
       environment: "dev"
       config: "PerfectThymeTech"
-      terraform_version: "1.9.5"
+      terraform_version: "1.9.6"
       node_version: 20
       working_directory: "./code/infra"
-      tenant_id: "3556be79-2979-4b19-a1af-4dd4e6d9ed7e"
-      subscription_id: "8f171ff9-2b5b-4f0f-aed5-7fa360a1d094"
+      tenant_id: "37963dd4-f4e6-40f8-a7d6-24b97919e452"
+      subscription_id: "1fdab118-1638-419a-8b12-06c9543714a0"
     secrets:
       CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       BOT_OAUTH_CLIENT_ID: ${{ secrets.BOT_OAUTH_CLIENT_ID }}
       BOT_OAUTH_CLIENT_SECRET: ${{ secrets.BOT_OAUTH_CLIENT_SECRET }}

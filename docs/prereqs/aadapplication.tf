@@ -45,3 +45,17 @@ resource "azuread_application" "application" {
     ]
   }
 }
+
+resource "azuread_service_principal" "service_principal" {
+  client_id    = azuread_application.application.client_id
+  use_existing = true
+
+  account_enabled              = true
+  alternative_names            = []
+  app_role_assignment_required = false
+  description                  = "Service Principal for AAD Auth."
+  notes                        = "Service Principal for AAD in teh Bot Frameowork."
+  owners = [
+    data.azuread_client_config.current.object_id
+  ]
+}

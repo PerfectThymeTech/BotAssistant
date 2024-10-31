@@ -18,4 +18,14 @@ locals {
     india  = "https://india.token.botframework.com/.auth/web/redirect"
     gov    = "https://token.botframework.azure.us/.auth/web/redirect"
   }
+
+  # DNS variables
+  private_dns_zone_names = [
+    "privatelink.vaultcore.azure.net",
+    "privatelink.azurewebsites.net",
+    "privatelink.directline.botframework.com",
+    "privatelink.token.botframework.com",
+    "privatelink.openai.azure.com",
+    "privatelink.documents.azure.com",
+  ]
 }

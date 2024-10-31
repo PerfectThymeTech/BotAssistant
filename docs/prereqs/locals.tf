@@ -20,12 +20,12 @@ locals {
   }
 
   # DNS variables
-  private_dns_zone_names = [
-    "privatelink.vaultcore.azure.net",
-    "privatelink.azurewebsites.net",
-    "privatelink.directline.botframework.com",
-    "privatelink.token.botframework.com",
-    "privatelink.openai.azure.com",
-    "privatelink.documents.azure.com",
-  ]
+  private_dns_zone_names = {
+    vault                    = "privatelink.vaultcore.azure.net",
+    sites                    = "privatelink.azurewebsites.net",
+    bot_framework_directline = "privatelink.directline.botframework.com",
+    bot_framework_token      = "privatelink.token.botframework.com",
+    open_ai                  = "privatelink.openai.azure.com",
+    cosmos_sql               = "privatelink.documents.azure.com",
+  }
 }

@@ -40,7 +40,7 @@ jobs:
       - name: Run Python Tests
         id: python_test
         run: |
-          pip install -r "${WEBAPP_DIRECTORY}/requirements.txt" -q
+          pip install -r "${WEBAPP_DIRECTORY}/requirements.txt"
           pip install -r requirements.txt -q
           pytest
         env:

@@ -64,9 +64,9 @@ jobs:
           cache-dependency-path: |
             ${{ inputs.webapp_directory }}/requirements.txt
 
-      # Install Function Dependencies
-      - name: Resolve Function Dependencies
-        id: function_dependencies
+      # Install Web App Dependencies
+      - name: Resolve Web App Dependencies
+        id: webapp_dependencies
         shell: bash
         run: |
           pushd "${WEBAPP_DIRECTORY}"

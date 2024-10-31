@@ -1,5 +1,5 @@
 resource "azurerm_virtual_network" "virtual_network" {
-  name = "${local.prefix}-vnet001"
+  name                = "${local.prefix}-vnet001"
   location            = var.location
   resource_group_name = azurerm_resource_group.resource_group.name
   tags                = var.tags

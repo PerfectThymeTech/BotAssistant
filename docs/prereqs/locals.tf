@@ -1,4 +1,4 @@
-locals {  
+locals {
   # Naming locals
   prefix = "${lower(var.prefix)}-${var.environment}"
   resource_providers_to_register = [
@@ -8,7 +8,7 @@ locals {
     "Microsoft.Network",
     "Microsoft.Resources",
   ]
-  
+
   # AAD App locals
   application_name = "bot-oauth"
   redirect_uris = {

@@ -58,7 +58,7 @@ module "cosmosdb_account" {
 resource "azurerm_cosmosdb_sql_database" "cosmosdb_sql_database" {
   name                = "BotDb"
   account_name        = module.cosmosdb_account.cosmosdb_account_name
-  resource_group_name = azurerm_resource_group.resource_group.name
+  resource_group_name = azurerm_resource_group.resource_group_consumption.name
 
   autoscale_settings {
     max_throughput = 1000

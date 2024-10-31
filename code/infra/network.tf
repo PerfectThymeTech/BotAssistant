@@ -1,6 +1,6 @@
 resource "azapi_resource" "subnet_web_app" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
-  name      = "WebAppSubnet"
+  name      = "WebAppSubnetBot"
   parent_id = data.azurerm_virtual_network.virtual_network.id
 
   body = {
@@ -31,7 +31,7 @@ resource "azapi_resource" "subnet_web_app" {
 
 resource "azapi_resource" "subnet_private_endpoints" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
-  name      = "PrivateEndpointSubnet"
+  name      = "PrivateEndpointSubnetBot"
   parent_id = data.azurerm_virtual_network.virtual_network.id
 
   body = {

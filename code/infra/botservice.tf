@@ -6,7 +6,7 @@ module "bot_service" {
   }
 
   location             = var.location
-  resource_group_name  = azurerm_resource_group.resource_group.name
+  resource_group_name  = azurerm_resource_group.resource_group_consumption.name
   tags                 = var.tags
   bot_service_name     = "${local.prefix}-bot001"
   bot_service_location = "global"

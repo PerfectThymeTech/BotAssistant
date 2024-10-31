@@ -1,7 +1,7 @@
 resource "azurerm_linux_web_app" "linux_web_app" {
   name                = "${local.prefix}-app001"
   location            = var.location
-  resource_group_name = azurerm_resource_group.resource_group.name
+  resource_group_name = azurerm_resource_group.resource_group_consumption.name
   tags                = var.tags
   identity {
     type = "UserAssigned"

@@ -6,7 +6,7 @@ module "cosmosdb_account" {
   }
 
   location                                            = var.location
-  resource_group_name                                 = azurerm_resource_group.resource_group.name
+  resource_group_name                                 = azurerm_resource_group.resource_group_consumption.name
   tags                                                = var.tags
   cosmosdb_account_name                               = "${local.prefix}-cosmos001"
   cosmosdb_account_access_key_metadata_writes_enabled = true

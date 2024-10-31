@@ -138,6 +138,7 @@ variable "subnet_cidr_private_endpoints" {
   }
 }
 
+# DNS variables
 variable "private_dns_zone_id_vault" {
   description = "Specifies the resource ID of the private DNS zone for Azure Key Vault. Not required if DNS A-records get created via Azure Policy."
   type        = string
@@ -200,6 +201,28 @@ variable "private_dns_zone_id_cosmos_sql" {
   default     = ""
   validation {
     condition     = var.private_dns_zone_id_cosmos_sql == "" || (length(split("/", var.private_dns_zone_id_cosmos_sql)) == 9 && endswith(var.private_dns_zone_id_cosmos_sql, "privatelink.documents.azure.com"))
+    error_message = "Please specify a valid resource ID for the private DNS Zone."
+  }
+}
+
+variable "private_dns_zone_id_blob" {
+  description = "Specifies the resource ID of the private DNS zone for blob storage. Not required if DNS A-records get created via Azure Policy."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = var.private_dns_zone_id_blob == "" || (length(split("/", var.private_dns_zone_id_blob)) == 9 && endswith(var.private_dns_zone_id_blob, "privatelink.blob.core.windows.net"))
+    error_message = "Please specify a valid resource ID for the private DNS Zone."
+  }
+}
+
+variable "private_dns_zone_id_data_factory" {
+  description = "Specifies the resource ID of the private DNS zone for Azure Data Factory. Not required if DNS A-records get created via Azure Policy."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = var.private_dns_zone_id_data_factory == "" || (length(split("/", var.private_dns_zone_id_data_factory)) == 9 && endswith(var.private_dns_zone_id_data_factory, "privatelink.datafactory.azure.net"))
     error_message = "Please specify a valid resource ID for the private DNS Zone."
   }
 }

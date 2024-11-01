@@ -138,6 +138,16 @@ variable "subnet_cidr_private_endpoints" {
   }
 }
 
+variable "subnet_cidr_function" {
+  description = "Specifies the subnet cidr range for the function subnet."
+  type        = string
+  sensitive   = false
+  validation {
+    condition     = length(split("/", var.subnet_cidr_function)) == 2
+    error_message = "Please specify a valid subnet cidr range."
+  }
+}
+
 # DNS variables
 variable "private_dns_zone_id_vault" {
   description = "Specifies the resource ID of the private DNS zone for Azure Key Vault. Not required if DNS A-records get created via Azure Policy."
@@ -212,6 +222,17 @@ variable "private_dns_zone_id_blob" {
   default     = ""
   validation {
     condition     = var.private_dns_zone_id_blob == "" || (length(split("/", var.private_dns_zone_id_blob)) == 9 && endswith(var.private_dns_zone_id_blob, "privatelink.blob.core.windows.net"))
+    error_message = "Please specify a valid resource ID for the private DNS Zone."
+  }
+}
+
+variable "private_dns_zone_id_file" {
+  description = "Specifies the resource ID of the private DNS zone for file storage. Not required if DNS A-records get created via Azure Policy."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = var.private_dns_zone_id_file == "" || (length(split("/", var.private_dns_zone_id_file)) == 9 && endswith(var.private_dns_zone_id_file, "privatelink.file.core.windows.net"))
     error_message = "Please specify a valid resource ID for the private DNS Zone."
   }
 }

@@ -25,6 +25,7 @@ nsg_id                        = "/subscriptions/1fdab118-1638-419a-8b12-06c95437
 route_table_id                = "/subscriptions/1fdab118-1638-419a-8b12-06c9543714a0/resourceGroups/ptt-dev-networking-rg/providers/Microsoft.Network/routeTables/ptt-dev-default-rt001"
 subnet_cidr_web_app           = "10.3.1.192/26"
 subnet_cidr_private_endpoints = "10.3.2.0/26"
+subnet_cidr_function          = "10.3.2.64/26"
 
 # DNS variables
 private_dns_zone_id_vault                    = "/subscriptions/e82c5267-9dc4-4f45-ac13-abdd5e130d27/resourceGroups/ptt-dev-privatedns-rg/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
@@ -34,4 +35,5 @@ private_dns_zone_id_bot_framework_token      = "/subscriptions/e82c5267-9dc4-4f4
 private_dns_zone_id_open_ai                  = "/subscriptions/e82c5267-9dc4-4f45-ac13-abdd5e130d27/resourceGroups/ptt-dev-privatedns-rg/providers/Microsoft.Network/privateDnsZones/privatelink.openai.azure.com"
 private_dns_zone_id_cosmos_sql               = "/subscriptions/e82c5267-9dc4-4f45-ac13-abdd5e130d27/resourceGroups/ptt-dev-privatedns-rg/providers/Microsoft.Network/privateDnsZones/privatelink.documents.azure.com"
 private_dns_zone_id_blob                     = "/subscriptions/e82c5267-9dc4-4f45-ac13-abdd5e130d27/resourceGroups/ptt-dev-privatedns-rg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+private_dns_zone_id_file                     = "/subscriptions/e82c5267-9dc4-4f45-ac13-abdd5e130d27/resourceGroups/ptt-dev-privatedns-rg/providers/Microsoft.Network/privateDnsZones/privatelink.file.core.windows.net"
 private_dns_zone_id_data_factory             = "/subscriptions/e82c5267-9dc4-4f45-ac13-abdd5e130d27/resourceGroups/ptt-dev-privatedns-rg/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"

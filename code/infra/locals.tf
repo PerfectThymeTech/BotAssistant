@@ -22,11 +22,11 @@ locals {
     WEBSITE_CONTENTOVERVNET                    = "1"
 
     # Auth app settings
-    MICROSOFT_APP_ID           = module.user_assigned_identity.user_assigned_identity_client_id
+    MICROSOFT_APP_ID           = module.user_assigned_identity_consumption.user_assigned_identity_client_id
     MICROSOFT_APP_PASSWORD     = ""
-    MICROSOFT_APP_TENANTID     = module.user_assigned_identity.user_assigned_identity_tenant_id
+    MICROSOFT_APP_TENANTID     = module.user_assigned_identity_consumption.user_assigned_identity_tenant_id
     MICROSOFT_APP_TYPE         = "UserAssignedMSI"
-    MANAGED_IDENTITY_CLIENT_ID = module.user_assigned_identity.user_assigned_identity_client_id
+    MANAGED_IDENTITY_CLIENT_ID = module.user_assigned_identity_consumption.user_assigned_identity_client_id
     OAUTH_CONNECTION_NAME      = local.bot_connection_aadv2_oauth_name
 
     # Azure open ai app settings

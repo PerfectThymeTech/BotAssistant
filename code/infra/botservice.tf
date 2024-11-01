@@ -16,9 +16,9 @@ module "bot_service" {
     key     = null
   }
   bot_service_microsoft_app = {
-    app_id        = module.user_assigned_identity.user_assigned_identity_client_id
-    app_msi_id    = module.user_assigned_identity.user_assigned_identity_id
-    app_tenant_id = module.user_assigned_identity.user_assigned_identity_tenant_id
+    app_id        = module.user_assigned_identity_consumption.user_assigned_identity_client_id
+    app_msi_id    = module.user_assigned_identity_consumption.user_assigned_identity_id
+    app_tenant_id = module.user_assigned_identity_consumption.user_assigned_identity_tenant_id
     app_type      = "UserAssignedMSI"
   }
   bot_service_sku                              = "S1"

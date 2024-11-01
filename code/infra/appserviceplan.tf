@@ -31,7 +31,7 @@ module "app_service_plan_ingestion" {
   service_plan_os_type                      = "Linux"
   service_plan_per_site_scaling_enabled     = false
   service_plan_sku_name                     = "FC1"
-  service_plan_worker_count                 = 0
+  service_plan_worker_count                 = 1
   service_plan_zone_balancing_enabled       = false
   diagnostics_configurations                = local.diagnostics_configurations
 }

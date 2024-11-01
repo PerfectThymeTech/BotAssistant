@@ -1,6 +1,14 @@
 resource "azurerm_role_assignment" "uai_ngst_roleassignment_storage_blob_data_owner" {
-  description          = "Required for reding and writing data from the function."
+  description          = "Required for reading and writing data from the function."
   scope                = module.storage_account.storage_account_id
+  role_definition_name = "Storage Blob Data Owner"
+  principal_id         = module.user_assigned_identity_ingestion.user_assigned_identity_principal_id
+  principal_type       = "ServicePrincipal"
+}
+
+resource "azurerm_role_assignment" "uai_ngst_roleassignment_storage_function_blob_data_owner" {
+  description          = "Required for running the function."
+  scope                = module.storage_account_function.storage_account_id
   role_definition_name = "Storage Blob Data Owner"
   principal_id         = module.user_assigned_identity_ingestion.user_assigned_identity_principal_id
   principal_type       = "ServicePrincipal"

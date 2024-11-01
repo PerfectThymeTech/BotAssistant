@@ -18,7 +18,7 @@ module "user_assigned_identity_ingestion" {
   }
 
   location                                              = var.location
-  resource_group_name                                   = azurerm_resource_group.resource_group_consumption.name
+  resource_group_name                                   = azurerm_resource_group.resource_group_ingestion.name
   tags                                                  = var.tags
   user_assigned_identity_name                           = "${local.prefix}-ngst-uai001"
   user_assigned_identity_federated_identity_credentials = {}

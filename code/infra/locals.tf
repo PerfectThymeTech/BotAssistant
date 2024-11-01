@@ -2,6 +2,7 @@ locals {
   # Naming locals
   prefix = "${lower(var.prefix)}-${var.environment}"
   resource_providers_to_register = [
+    "Microsoft.App",
     "Microsoft.Authorization",
     "Microsoft.BotService",
     "Microsoft.CognitiveServices",
@@ -64,8 +65,9 @@ locals {
   }
 
   # Storage locals
-  storage_account_container_raw_name     = "raw"
-  storage_account_container_curated_name = "curated"
+  storage_account_container_raw_name           = "raw"
+  storage_account_container_curated_name       = "curated"
+  storage_account_container_function_code_name = "code"
 
   # Logging locals
   diagnostics_configurations = [

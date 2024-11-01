@@ -63,6 +63,10 @@ locals {
     name                = split("/", var.log_analytics_workspace_id)[8]
   }
 
+  # Storage locals
+  storage_account_container_raw_name     = "raw"
+  storage_account_container_curated_name = "curated"
+
   # Logging locals
   diagnostics_configurations = [
     {

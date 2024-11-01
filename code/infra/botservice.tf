@@ -6,7 +6,7 @@ module "bot_service" {
   }
 
   location             = var.location
-  resource_group_name  = azurerm_resource_group.resource_group.name
+  resource_group_name  = azurerm_resource_group.resource_group_consumption.name
   tags                 = var.tags
   bot_service_name     = "${local.prefix}-bot001"
   bot_service_location = "global"
@@ -38,7 +38,7 @@ resource "azurerm_bot_connection" "bot_connection_aadv2_oauth" {
   name                = local.bot_connection_aadv2_oauth_name
   bot_name            = module.bot_service.bot_service_name
   location            = "global"
-  resource_group_name = azurerm_resource_group.resource_group.name
+  resource_group_name = azurerm_resource_group.resource_group_consumption.name
 
   client_id     = var.bot_oauth_client_id
   client_secret = var.bot_oauth_client_secret

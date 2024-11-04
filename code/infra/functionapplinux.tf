@@ -109,7 +109,7 @@ resource "azapi_resource" "linux_function_app_flex" {
         httpLoggingEnabled                     = true
         ipSecurityRestrictions                 = []
         ipSecurityRestrictionsDefaultAction    = "Allow" # "Deny"
-        keyVaultReferenceIdentity              = module.user_assigned_identity_ingestion.user_assigned_identity_id
+        keyVaultReferenceIdentity              = module.user_assigned_identity_consumption.user_assigned_identity_id
         loadBalancing                          = "LeastRequests"
         localMySqlEnabled                      = false
         # minTlsCipherSuite = ""

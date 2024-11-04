@@ -40,14 +40,14 @@ resource "azapi_resource" "linux_function_app" {
           version = "3.11"
         }
         scaleAndConcurrency = {
-          alwaysReady          = []
+          # alwaysReady          = []
           instanceMemoryMB     = 2048
           maximumInstanceCount = 40
-          triggers = {
-            http = {
-              perInstanceConcurrency = 5
-            }
-          }
+          # triggers = {
+          #   http = {
+          #     perInstanceConcurrency = 5
+          #   }
+          # }
         }
       }
       hostNamesDisabled         = false
@@ -58,9 +58,10 @@ resource "azapi_resource" "linux_function_app" {
       keyVaultReferenceIdentity = module.user_assigned_identity_ingestion.user_assigned_identity_id
       publicNetworkAccess       = "Enabled"
       redundancyMode            = null
+      redundancyMode            = "None"
       scmSiteAlsoStopped        = false
       serverFarmId              = module.app_service_plan_ingestion.service_plan_id
-      storageAccountRequired    = true
+      storageAccountRequired    = false
       virtualNetworkSubnetId    = azapi_resource.subnet_function.id
       siteConfig = {
         appSettings = [
@@ -105,7 +106,7 @@ resource "azapi_resource" "linux_function_app" {
         detailedErrorLoggingEnabled            = true
         functionsRuntimeScaleMonitoringEnabled = null # Not available for flex plans
         healthCheckPath                        = null
-        http20Enabled                          = true
+        http20Enabled                          = false # true
         httpLoggingEnabled                     = true
         ipSecurityRestrictions                 = []
         ipSecurityRestrictionsDefaultAction    = "Allow" # "Deny"
@@ -113,18 +114,17 @@ resource "azapi_resource" "linux_function_app" {
         loadBalancing                          = "LeastRequests"
         localMySqlEnabled                      = false
         # minTlsCipherSuite = ""
-        minTlsVersion                          = "1.3"
+        minTlsVersion                          = "1.2"
         publicNetworkAccess                    = "Enabled"
         remoteDebuggingEnabled                 = false
         requestTracingEnabled                  = true
         scmIpSecurityRestrictions              = []
         scmIpSecurityRestrictionsDefaultAction = "Allow" # "Deny"
         scmIpSecurityRestrictionsUseMain       = false
-        scmMinTlsVersion                       = "1.3"
+        scmMinTlsVersion                       = "1.2"
         scmType                                = "None"
         websiteTimeZone                        = "UTC"
         webSocketsEnabled                      = false
-
       }
     }
   }

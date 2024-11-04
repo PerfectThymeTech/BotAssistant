@@ -32,7 +32,7 @@ resource "azapi_resource" "linux_function_app_flex" {
               userAssignedIdentityResourceId = module.user_assigned_identity_ingestion.user_assigned_identity_id
             }
             type  = "blobContainer"
-            value = "${module.storage_account_function.storage_account_primary_blob_endpoint}/${local.storage_account_container_function_code_name}"
+            value = "${module.storage_account_function.storage_account_primary_blob_endpoint}${local.storage_account_container_function_code_name}"
           }
         }
         runtime = {

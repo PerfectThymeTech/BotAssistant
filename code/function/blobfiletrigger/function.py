@@ -26,6 +26,4 @@ async def upload_video(client: blob.BlobClient):
         storage_blob_name=client.blob_name,
         managed_identity_client_id=settings.MANAGED_IDENTITY_CLIENT_ID,
     )
-    logging.info(
-        f"Completed Function run successfully."
-    )
+    logging.info(f"Completed Function run successfully.")

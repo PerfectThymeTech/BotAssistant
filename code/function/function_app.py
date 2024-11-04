@@ -1,6 +1,6 @@
 import azure.functions as func
-from health.function import bp as bp_health
 from blobfiletrigger.function import bp as bp_videoupload
+from health.function import bp as bp_health
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 

@@ -7,7 +7,7 @@ resource "azapi_resource" "linux_function_app_flex" {
   identity {
     type = "UserAssigned"
     identity_ids = [
-      module.user_assigned_identity_consumption.user_assigned_identity_id
+      module.user_assigned_identity_ingestion.user_assigned_identity_id,
     ]
   }
 

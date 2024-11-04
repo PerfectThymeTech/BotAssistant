@@ -103,7 +103,7 @@ resource "azapi_resource" "linux_function_app_flex" {
         ]
         # autoSwapSlotName = ""
         detailedErrorLoggingEnabled            = true
-        functionsRuntimeScaleMonitoringEnabled = true
+        functionsRuntimeScaleMonitoringEnabled = null # Not available for flex plans
         healthCheckPath                        = null
         http20Enabled                          = true
         httpLoggingEnabled                     = true

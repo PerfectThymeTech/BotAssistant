@@ -166,7 +166,7 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostic_setting_linux_function
 resource "azurerm_private_endpoint" "linux_function_app_private_endpoint" {
   name                = "${azapi_resource.linux_function_app.name}-pe"
   location            = var.location
-  resource_group_name = azurerm_resource_group.resource_group.name
+  resource_group_name = azurerm_resource_group.resource_group_ingestion.id
   tags                = var.tags
 
   custom_network_interface_name = "${azapi_resource.linux_function_app.name}-nic"

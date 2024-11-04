@@ -98,7 +98,7 @@ jobs:
           sudo apt-get install azure-functions-core-tools-4
 
           # Deploy function
-          func azure functionapp publish ${{ inputs.function_name }}
+          func azure functionapp publish ${{ inputs.function_name }}  --python
 
         # uses: Azure/functions-action@v1
         # with:

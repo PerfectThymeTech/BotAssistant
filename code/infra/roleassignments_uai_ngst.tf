@@ -14,6 +14,14 @@ resource "azurerm_role_assignment" "uai_ngst_roleassignment_storage_function_blo
   principal_type       = "ServicePrincipal"
 }
 
+resource "azurerm_role_assignment" "uai_ngst_roleassignment_storage_function_blob_data_contributor" {
+  description          = "Required for running the function."
+  scope                = module.storage_account_function.storage_account_id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = module.user_assigned_identity_ingestion.user_assigned_identity_principal_id
+  principal_type       = "ServicePrincipal"
+}
+
 resource "azurerm_role_assignment" "uai_ngst_roleassignment_open_ai_contributor" {
   description          = "Required for accessing azure open ai from the function."
   scope                = module.azure_open_ai.cognitive_account_id

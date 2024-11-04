@@ -1,5 +1,6 @@
 resource "azapi_resource" "linux_function_app_flex" {
   type      = "Microsoft.Web/sites@2024-04-01"
+  name      = "${local.prefix}-fctn001"
   location  = var.location
   parent_id = azurerm_resource_group.resource_group_ingestion.id
   tags      = var.tags

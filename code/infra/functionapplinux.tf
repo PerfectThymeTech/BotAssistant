@@ -42,7 +42,7 @@ resource "azapi_resource" "linux_function_app_flex" {
         scaleAndConcurrency = {
           alwaysReady          = []
           instanceMemoryMB     = 2048
-          maximumInstanceCount = 10
+          maximumInstanceCount = 40
           triggers = {
             http = {
               perInstanceConcurrency = 5

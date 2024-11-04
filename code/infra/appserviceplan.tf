@@ -33,5 +33,5 @@ module "app_service_plan_ingestion" {
   service_plan_sku_name                     = "FC1"
   service_plan_worker_count                 = 1
   service_plan_zone_balancing_enabled       = false
-  diagnostics_configurations                = local.diagnostics_configurations
+  # diagnostics_configurations                = local.diagnostics_configurations
 }

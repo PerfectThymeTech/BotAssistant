@@ -1,10 +1,10 @@
-name: Web App Deployment
+name: Function Deployment
 on:
   push:
     branches:
       - main
     paths:
-      - "code/backend/**"
+      - "code/function/**"
       - "config/**"
       - "requirements.txt"
 
@@ -12,7 +12,7 @@ on:
     branches:
       - main
     paths:
-      - "code/backend/**"
+      - "code/function/**"
       - "config/**"
       - "requirements.txt"
 
@@ -22,7 +22,7 @@ jobs:
     name: "Web App Test"
     with:
       python_version: "3.11"
-      webapp_directory: "./code/backend"
+      webapp_directory: "./code/function"
 
   webapp_dev:
     uses: ./.github/workflows/_webappDeployTemplate.yml
@@ -31,8 +31,8 @@ jobs:
     with:
       environment: "dev"
       python_version: "3.11"
-      webapp_directory: "./code/backend"
-      webapp_name: "bfr-dev-app001"
+      webapp_directory: "./code/function"
+      webapp_name: "bfr-dev-fctn001"
       tenant_id: "37963dd4-f4e6-40f8-a7d6-24b97919e452"
       subscription_id: "1fdab118-1638-419a-8b12-06c9543714a0"
     secrets:

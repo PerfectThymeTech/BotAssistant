@@ -1,6 +1,6 @@
 azure-identity~=1.17.1
 azure-monitor-opentelemetry~=1.6.4
-aiohttp~=3.10.5
+aiohttp~=3.11.8
 botbuilder-core~=4.16.2
 botbuilder-azure~=4.16.2
 botbuilder-integration-aiohttp~=4.16.2

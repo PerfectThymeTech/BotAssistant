@@ -2,6 +2,7 @@ locals {
   # Naming locals
   prefix = "${lower(var.prefix)}-${var.environment}"
   resource_providers_to_register = [
+    "Microsoft.App",
     "Microsoft.Authorization",
     "Microsoft.BotService",
     "Microsoft.CognitiveServices",
@@ -22,11 +23,11 @@ locals {
     WEBSITE_CONTENTOVERVNET                    = "1"
 
     # Auth app settings
-    MICROSOFT_APP_ID           = module.user_assigned_identity.user_assigned_identity_client_id
+    MICROSOFT_APP_ID           = module.user_assigned_identity_consumption.user_assigned_identity_client_id
     MICROSOFT_APP_PASSWORD     = ""
-    MICROSOFT_APP_TENANTID     = module.user_assigned_identity.user_assigned_identity_tenant_id
+    MICROSOFT_APP_TENANTID     = module.user_assigned_identity_consumption.user_assigned_identity_tenant_id
     MICROSOFT_APP_TYPE         = "UserAssignedMSI"
-    MANAGED_IDENTITY_CLIENT_ID = module.user_assigned_identity.user_assigned_identity_client_id
+    MANAGED_IDENTITY_CLIENT_ID = module.user_assigned_identity_consumption.user_assigned_identity_client_id
     OAUTH_CONNECTION_NAME      = local.bot_connection_aadv2_oauth_name
 
     # Azure open ai app settings
@@ -64,8 +65,9 @@ locals {
   }
 
   # Storage locals
-  storage_account_container_raw_name     = "raw"
-  storage_account_container_curated_name = "curated"
+  storage_account_container_raw_name           = "raw"
+  storage_account_container_curated_name       = "curated"
+  storage_account_container_function_code_name = "code"
 
   # Logging locals
   diagnostics_configurations = [

@@ -28,6 +28,7 @@ locals {
     open_ai                  = "privatelink.openai.azure.com",
     cosmos_sql               = "privatelink.documents.azure.com",
     blob                     = "privatelink.blob.core.windows.net",
+    file                     = "privatelink.file.core.windows.net",
     data_factory             = "privatelink.datafactory.azure.net",
   }
 }

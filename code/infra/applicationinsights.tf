@@ -5,7 +5,7 @@ module "application_insights" {
   }
 
   location                                        = var.location
-  resource_group_name                             = azurerm_resource_group.resource_group_consumption.name
+  resource_group_name                             = azurerm_resource_group.resource_group_monitoring.name
   tags                                            = var.tags
   application_insights_name                       = "${local.prefix}-appi001"
   application_insights_application_type           = "web"

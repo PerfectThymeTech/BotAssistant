@@ -56,3 +56,34 @@ resource "azapi_resource" "subnet_private_endpoints" {
     azapi_resource.subnet_web_app
   ]
 }
+
+resource "azapi_resource" "subnet_function" {
+  type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
+  name      = "FunctionAppSubnetBot"
+  parent_id = data.azurerm_virtual_network.virtual_network.id
+
+  body = {
+    properties = {
+      addressPrefix = var.subnet_cidr_function
+      delegations = [
+        {
+          name = "FunctionDelegation"
+          properties = {
+            serviceName = "Microsoft.App/environments"
+          }
+        }
+      ]
+      ipAllocations = []
+      networkSecurityGroup = {
+        id = data.azurerm_network_security_group.network_security_group.id
+      }
+      privateEndpointNetworkPolicies    = "Enabled"
+      privateLinkServiceNetworkPolicies = "Enabled"
+      routeTable = {
+        id = data.azurerm_route_table.route_table.id
+      }
+      serviceEndpointPolicies = []
+      serviceEndpoints        = []
+    }
+  }
+}

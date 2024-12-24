@@ -6,7 +6,7 @@ resource "azurerm_linux_web_app" "linux_web_app" {
   identity {
     type = "UserAssigned"
     identity_ids = [
-      module.user_assigned_identity.user_assigned_identity_id
+      module.user_assigned_identity_consumption.user_assigned_identity_id
     ]
   }
 
@@ -18,9 +18,9 @@ resource "azurerm_linux_web_app" "linux_web_app" {
   enabled                                        = true
   ftp_publish_basic_authentication_enabled       = false
   https_only                                     = true
-  key_vault_reference_identity_id                = module.user_assigned_identity.user_assigned_identity_id
+  key_vault_reference_identity_id                = module.user_assigned_identity_consumption.user_assigned_identity_id
   public_network_access_enabled                  = true
-  service_plan_id                                = module.app_service_plan.service_plan_id
+  service_plan_id                                = module.app_service_plan_consumption.service_plan_id
   virtual_network_subnet_id                      = azapi_resource.subnet_web_app.id
   webdeploy_publish_basic_authentication_enabled = false
   site_config {
